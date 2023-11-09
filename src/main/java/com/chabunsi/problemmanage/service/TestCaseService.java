@@ -1,11 +1,13 @@
 package com.chabunsi.problemmanage.service;
 
+import com.chabunsi.problemmanage.dto.request.AddTestCase;
+import com.chabunsi.problemmanage.entity.Problem;
 import com.chabunsi.problemmanage.entity.TestCase;
 
 import java.util.List;
 
 public interface TestCaseService {
-    List<TestCase>  getTestCases();  // TODO : DTO 추가해야 함
-    List<Long>      addTestCases();  // TODO : DTO 추가해야 함
-    void            deleteTestCases();
+    List<TestCase>      findTestCasesByProblem(Long problemId);
+    List<TestCase>      addTestCases(List<AddTestCase> addTestCases, Problem problem);
+    void                deleteTestCases();
 }

@@ -35,7 +35,11 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.mariadb.jdbc:mariadb-java-client:3.2.0'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// DB 직접 테스트
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// 단위 테스트
+	testImplementation 'org.mockito:mockito-junit-jupiter'
 }
 
 dependencyManagement {
