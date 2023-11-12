@@ -100,6 +100,7 @@ DOJ의 문제 관리 서비스입니다.
 | problemId | Long | 문제 ID       |
 
 - Response
+
 ![img_3.png](img_3.png)
 
 ### 문제 업데이트
@@ -121,6 +122,7 @@ DOJ의 문제 관리 서비스입니다.
 | time_limited   | Text         | Output 예제      |
 
 - Response
+
 ![img_4.png](img_4.png)
 
 ## TestCase
@@ -156,6 +158,7 @@ ProblemId를 외래키로 갖고 있는 테스트케이스 Table
 | ids | List<Long> | 테스트 케이스 ID 리스트 |
 
 - Response
+
 ![img_5.png](img_5.png)
 
 ### 테스트 케이스 업데이트
@@ -175,4 +178,5 @@ ProblemId를 외래키로 갖고 있는 테스트케이스 Table
 | output   | Text     | 출력 예제       |
 
 - Response
+
 ![img_6.png](img_6.png)
