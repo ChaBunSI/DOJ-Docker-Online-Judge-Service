@@ -1,0 +1,14 @@
+# Parameters
+SOURCE="source"
+LANGUAGE="language"
+USER_ID="user_id"
+PROBLEM_ID="problem_id"
+
+# Language Codes
+LANGUAGE_DEFAULT=0
+LANGUAGE_C=1
+LANGUAGE_JAVA=2
+LANGUAGE_PYTHON=3
+
+# SOURCE CODE
+SOURCE_DEFAULT=""

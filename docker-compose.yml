@@ -1,0 +1,30 @@
+version: "3.3"
+services:
+  db:
+    container_name: sub_db
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=ngds
+      - POSTGRES_USER=ngds
+      - POSTGRES_PASSWORD=ngds
+    volumes:
+      - ./psql_dir:/var/lib/postgresql/data
+  submission:
+    container_name: submission_service
+    environment:
+      - DJANGO_DB_HOST=db
+    volumes:
+      - ./:/var/www/submission
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8081:80
+    depends_on:
+      - db
+    links:
+      - db
+    command: /bin/sh -c "cd /var/www/submission && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:80"
+    # env_file:
+    #   - ./.env
