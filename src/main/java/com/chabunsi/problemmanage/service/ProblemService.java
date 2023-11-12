@@ -1,16 +1,17 @@
 package com.chabunsi.problemmanage.service;
 
-import com.chabunsi.problemmanage.dto.request.AddProblemBody;
+import com.chabunsi.problemmanage.dto.request.ProblemBody;
+import com.chabunsi.problemmanage.dto.response.ProblemWithTestcase;
 import com.chabunsi.problemmanage.entity.Problem;
 import com.chabunsi.problemmanage.projection.ProblemListItem;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProblemService {
     List<ProblemListItem>   getProblemList();
-    Problem                 getProblem(Long problemId);
-    Problem                 addProblem(AddProblemBody addProblemBody);
+    ProblemWithTestcase     getProblem(Long problemId);
+    Problem                 addProblem(ProblemBody problemBody);
     void                    deleteProblem(Long problemId);
+    void                    updateProblem(ProblemBody problemBody, Long problemId);
 
 }

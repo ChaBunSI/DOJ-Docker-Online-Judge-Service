@@ -18,7 +18,6 @@ import java.util.List;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@RunWith(SpringRunner.class)
 public class TestCaseRepositoryTest {
     @Autowired
     private TestCaseRepository testCaseRepository;
@@ -32,19 +31,21 @@ public class TestCaseRepositoryTest {
 
     @Before
     public void SetUp() {
+        testCaseList = Arrays.asList(
+                TestCase.builder().id(1L).input("1 1 1").output("Test1!").build(),
+                TestCase.builder().id(2L).input("2 2 2").output("Test2!").build()
+        );
+
         problem = Problem.builder()
                 .id(1L)
                 .title("TestTitle")
                 .content("TestContent")
                 .solve_num(0)
                 .wrong_num(0)
+                .testCaseList(testCaseList)
                 .time_limited(200)
                 .memory_limited(100).build();
 
-        testCaseList = Arrays.asList(
-                TestCase.builder().id(1L).problem(problem).input("1 1 1").output("Test1!").build(),
-                TestCase.builder().id(2L).problem(problem).input("2 2 2").output("Test2!").build()
-        );
     }
 
     @Test

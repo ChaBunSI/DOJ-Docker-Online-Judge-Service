@@ -1,7 +1,7 @@
 package com.chabunsi.problemmanage.service;
 
-import com.chabunsi.problemmanage.dto.request.AddProblemBody;
-import com.chabunsi.problemmanage.dto.request.AddTestCase;
+import com.chabunsi.problemmanage.dto.request.ProblemBody;
+import com.chabunsi.problemmanage.dto.request.TestCaseBody;
 import com.chabunsi.problemmanage.entity.Problem;
 import com.chabunsi.problemmanage.repository.ProblemRepository;
 import org.junit.jupiter.api.*;
@@ -10,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,27 +37,27 @@ public class ProblemServiceTest {
     @DisplayName("문제 추가 및 조회 테스트")
     public void 문제_추가_조회() {
         // given
-        List<AddTestCase> addTestCases = Arrays.asList(
-                AddTestCase.builder()
+        List<TestCaseBody> testCaseBodies = Arrays.asList(
+                TestCaseBody.builder()
                         .input("1 1 1\n1 1")
                         .output("Test1!").build(),
-                AddTestCase.builder()
+                TestCaseBody.builder()
                         .input("2 2 2\n2 2")
                         .output("Test2!").build());
 
-        AddProblemBody addProblemBody = AddProblemBody.builder()
+        ProblemBody problemBody = ProblemBody.builder()
                 .title("TestTitle")
                 .content("TestContent")
                 .time_limited(200)
-                .addTestCaseList(addTestCases)
+                .testCaseBodyList(testCaseBodies)
                 .memory_limited(100).build();
 
         // when
-        when(problemRepository.save(any())).thenReturn(addProblemBody.Make());
+        when(problemRepository.save(any())).thenReturn(problemBody.toEntity());
 
         // then
-        Problem addedProblem = problemService.addProblem(addProblemBody);
-        Assertions.assertEquals(addProblemBody.Make().getTitle() ,addedProblem.getTitle());
+        Problem addedProblem = problemService.addProblem(problemBody);
+        Assertions.assertEquals(problemBody.toEntity().getTitle() ,addedProblem.getTitle());
 
     }
 

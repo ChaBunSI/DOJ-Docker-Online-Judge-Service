@@ -7,19 +7,21 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Builder
 @JsonAutoDetect
-public class AddProblemBody {
+public class ProblemBody {
     private String title;
     private String content;
     private int memory_limited;   // MB
-    private int time_limited;   // sec
+    private int time_limited;   // msec
 
-    private List<AddTestCase> addTestCaseList;
+    private List<TestCaseBody> testCaseBodyList;
 
-    public Problem Make() {
+    public Problem toEntity() {
+
         return Problem.builder()
                 .title(title)
                 .content(content)
@@ -27,6 +29,10 @@ public class AddProblemBody {
                 .wrong_num(0)
                 .memory_limited(memory_limited)
                 .time_limited(time_limited).build();
+    }
+
+    public List<TestCase> toTestCaseEntity(Problem problem) {
+        return testCaseBodyList.stream().map(tc -> new TestCase(tc, problem)).collect(Collectors.toList());
     }
 
 }

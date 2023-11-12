@@ -1,15 +1,17 @@
 package com.chabunsi.problemmanage.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "problem")
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Problem {
@@ -29,6 +31,10 @@ public class Problem {
 
     @Column
     private int wrong_num;
+
+    @OneToMany(mappedBy = "problem")
+    @JsonIgnore
+    private List<TestCase> testCaseList = new ArrayList<>();
 
     @Column
     private int time_limited;
