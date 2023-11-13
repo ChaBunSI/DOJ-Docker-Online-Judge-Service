@@ -40,6 +40,18 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	// 단위 테스트
 	testImplementation 'org.mockito:mockito-junit-jupiter'
+
+	implementation 'com.google.code.gson:gson:2.9.0'
+
+	// SNS - SQS implementation
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6'
+	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap:3.0.3'
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws-messaging:2.2.6'
+
+	implementation platform("software.amazon.awssdk:bom:2.20.54")
+	implementation "software.amazon.awssdk:sns" // SNS 모듈 추가
+	implementation "software.amazon.awssdk:sqs" // SQS 모듈 추가
+
 }
 
 dependencyManagement {
