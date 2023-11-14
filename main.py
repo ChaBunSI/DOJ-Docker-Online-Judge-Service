@@ -33,17 +33,33 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 app = FastAPI()
 
 
-@asynccontextmanager
-def lifespan(app: FastAPI):
-    eureka_client.init(
+# def lifespan():
+#     eureka_client.init(
+#         eureka_server="http://34.64.213.211:8761/eureka",
+#         app_name="AUTH-SERVICE",
+#         instance_host="10.178.0.3",
+#         instance_port=81
+#     )
+#     print("Registering...")
+#     eureka_logger.set_level("INFO")
+#     yield
+#     eureka_client.stop()
+
+
+@app.on_event("startup")
+async def startup_event():
+    await eureka_client.init_async(
         eureka_server="http://10.178.0.3:8761/eureka",
         app_name="AUTH-SERVICE",
         instance_host="10.178.0.3",
         instance_port=81
     )
     eureka_logger.set_level("INFO")
-    yield
-    eureka_client.stop()
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    await eureka_client.stop_async()
 
 
 def verify_password(plain_password, hashed_password):
