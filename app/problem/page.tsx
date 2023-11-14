@@ -24,7 +24,7 @@ export default function Problems() {
           <div className={pStyles.problem_list}>
             {[1, 2, 3].map((i) => (
               <Link
-                href={"/problems/" + i}
+                href={"/problem/" + i}
                 key={i}
                 className={pStyles.problem_block}
               >

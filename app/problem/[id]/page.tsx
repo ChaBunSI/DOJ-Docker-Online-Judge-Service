@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import styles from "../../page.module.css";
 import pStyles from "../../problem.module.css";
@@ -49,16 +51,17 @@ export default function Problem() {
           <div className={pStyles.problem_ioblock}>
             <div className={pStyles.problem_chunk}>
               <h2>Input Example</h2>
-              <textarea readOnly>
-                {`1 2\npen apple\npen pineapple\napplepen pineapplepen
-                `}
-              </textarea>
+              <textarea
+                readOnly
+                value={`1 2\npen apple\npen pineapple\napplepen pineapplepen`}
+              ></textarea>
             </div>
             <div className={pStyles.problem_chunk}>
               <h2>Output</h2>
-              <textarea readOnly>
-                {`3\napplepen\npineapplepen\npenpineappleapplepen`}
-              </textarea>
+              <textarea
+                readOnly
+                value={`3\napplepen\npineapplepen\npenpineappleapplepen`}
+              ></textarea>
             </div>
           </div>
         </div>
