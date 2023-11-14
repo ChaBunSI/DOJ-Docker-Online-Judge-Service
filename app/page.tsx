@@ -35,24 +35,19 @@ export default function Home() {
       </div>
 
       <div className={styles.grid}>
-        <Link href={"/problems"} className={styles.card}>
+        <Link href={"/problem"} className={styles.card}>
           <h2>
             Problems <span>-&gt;</span>
           </h2>
           <p>There are many problems. Find problem and solve it.</p>
         </Link>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <Link href={"/submission"} className={styles.card}>
           <h2>
             Submissions <span>-&gt;</span>
           </h2>
           <p>You can find all user's submissions.</p>
-        </a>
+        </Link>
 
         <a
           href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"

@@ -1,9 +1,13 @@
 import Link from "next/link";
 import styles from "../../page.module.css";
-import pStyles from "../../problems.module.css";
+import pStyles from "../../problem.module.css";
 import Image from "next/image";
+import { useEffect } from "react";
 
 export default function Problem() {
+  useEffect(() => {
+    console.log("hello");
+  }, []);
   return (
     <main className={pStyles.main}>
       <div className={styles.description}>
@@ -21,11 +25,11 @@ export default function Problem() {
       <div className={styles.center}>
         <div className={pStyles.problem_wrapper}>
           <div className={pStyles.problem_header}>
-            <Link href={"/problems"} className={pStyles.arrow}>
+            <Link href={"/problem"} className={pStyles.arrow}>
               &lt;-
             </Link>
             <h1>Problem Name</h1>
-            <Link href={"/problems"}>Submit</Link>
+            <Link href={"/submission"}>Submit</Link>
           </div>
           <div className={pStyles.problem_chunk}>
             <h2>Description</h2>
@@ -45,14 +49,14 @@ export default function Problem() {
           <div className={pStyles.problem_ioblock}>
             <div className={pStyles.problem_chunk}>
               <h2>Input Example</h2>
-              <textarea>
+              <textarea readOnly>
                 {`1 2\npen apple\npen pineapple\napplepen pineapplepen
                 `}
               </textarea>
             </div>
             <div className={pStyles.problem_chunk}>
               <h2>Output</h2>
-              <textarea>
+              <textarea readOnly>
                 {`3\napplepen\npineapplepen\npenpineappleapplepen`}
               </textarea>
             </div>

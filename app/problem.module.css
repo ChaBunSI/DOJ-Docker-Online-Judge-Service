@@ -14,9 +14,15 @@
     /* margin-bottom: 1rem; */
 }
 
-
 .arrow{
     font-size: 2rem;
+}
+
+.ac{
+    color: #00c800;
+}
+.wa{
+    color: #ff0000;
 }
 
 .problem_chunk{
