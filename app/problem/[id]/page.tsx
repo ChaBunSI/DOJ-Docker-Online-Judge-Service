@@ -5,8 +5,10 @@ import styles from "../../page.module.css";
 import pStyles from "../../problem.module.css";
 import Image from "next/image";
 import { useEffect } from "react";
+import { useParams } from "next/navigation";
 
 export default function Problem() {
+  const { id } = useParams();
   useEffect(() => {
     console.log("hello");
   }, []);
@@ -31,7 +33,7 @@ export default function Problem() {
               &lt;-
             </Link>
             <h1>Problem Name</h1>
-            <Link href={"/submission"}>Submit</Link>
+            <Link href={"/problem/" + id + "/submit"}>Submit</Link>
           </div>
           <div className={pStyles.problem_chunk}>
             <h2>Description</h2>

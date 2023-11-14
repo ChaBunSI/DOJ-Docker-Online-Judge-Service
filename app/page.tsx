@@ -46,7 +46,7 @@ export default function Home() {
           <h2>
             Submissions <span>-&gt;</span>
           </h2>
-          <p>You can find all user's submissions.</p>
+          <p>You can find all user&#39;s submissions.</p>
         </Link>
 
         <a
