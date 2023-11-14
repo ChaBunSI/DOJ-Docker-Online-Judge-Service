@@ -1,5 +1,8 @@
 from datetime import datetime, timedelta
 
+import py_eureka_client.eureka_client as eureka_client
+import py_eureka_client.logger as eureka_logger
+from contextlib import asynccontextmanager
 from typing import Union
 from fastapi import Depends, FastAPI, Request, Response
 from passlib.context import CryptContext
@@ -28,6 +31,19 @@ ALGORITHM = "HS256"
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 app = FastAPI()
+
+
+@asynccontextmanager
+def lifespan(app: FastAPI):
+    eureka_client.init(
+        eureka_server="http://10.178.0.3:8761/eureka",
+        app_name="AUTH-SERVICE",
+        instance_host="10.178.0.3",
+        instance_port=81
+    )
+    eureka_logger.set_level("INFO")
+    yield
+    eureka_client.stop()
 
 
 def verify_password(plain_password, hashed_password):
