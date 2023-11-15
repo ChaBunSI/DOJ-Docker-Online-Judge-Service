@@ -103,7 +103,6 @@ celerybeat-schedule.*
 *.sage.py 
 
 # Environments 
-.env 
 .venv 
 env/ 
 venv/ 
@@ -146,12 +145,8 @@ GitHub.sublime-settings
 psql_dir/
 
 # TEST Features
+test.py
 *.test.py
 jsons/
-
-# environment
-future_environment/
-future/
-
-# modules
-*.zip
+queue_access
+/test

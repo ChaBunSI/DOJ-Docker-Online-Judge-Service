@@ -18,9 +18,12 @@ from sub.serializers import SubmissionBasicSerializer, SubmissionDetailSerialize
 # utils
 from sub.utils import message_response, parse_value_from_request_or_json
 
-# literals
-from sub.literals import SOURCE, LANGUAGE, LANGUAGE_DEFAULT, LANGUAGE_C, LANGUAGE_JAVA, LANGUAGE_PYTHON, SOURCE_DEFAULT, USER_ID
+# common
+from common.topic_manager import publish_message
 
+# literals
+from sub.parameters import SOURCE, LANGUAGE, LANGUAGE_DEFAULT, LANGUAGE_C, LANGUAGE_JAVA, LANGUAGE_PYTHON, SOURCE_DEFAULT, USER_ID
+from settings.literals import AWS_SNS_TOPIC_SUBMIT
 
 # GET
 @csrf_exempt
@@ -49,7 +52,6 @@ def submit(request:WSGIRequest, problem_id:int):
         is_success = False
         ret_data = {}
     else:
-        print("May be Success ??")
         sub_object = Submission.objects.create(
             problem_id = problem_id,
             user_id = user_id,
@@ -57,7 +59,14 @@ def submit(request:WSGIRequest, problem_id:int):
             language_code = language_code,
         )
         ret_data = SubmissionBasicSerializer(sub_object).data
+        queue_data = SubmissionDetailSerializer(sub_object).data
         is_success = True
+        
+        
+        # 응답은 준비 완료
+        
+        # 메시지 큐에 보내주도록 하자구
+        publish_message(AWS_SNS_TOPIC_SUBMIT, queue_data)
     
     
     return message_response(ret_data, is_success)

@@ -3,8 +3,22 @@
 import os
 import sys
 
+# pip
+from py_eureka_client import eureka_client
 
+# tasks
+from common.queue_manager import sqs_thread_exec
+
+# literals
+from settings import literals
+eureka_client.init(
+    eureka_server = f"{literals.EUREKA_SERVER}:{literals.EUREKA_PORT}",
+    app_name = literals.INSTANCE_APP_NAME,
+    instance_host=literals.INSTANCE_HOST,
+    instance_port=literals.INSTANCE_PORT,
+)
 def main():
+    sqs_thread_exec(["non-fifo-test"])
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
     try:
