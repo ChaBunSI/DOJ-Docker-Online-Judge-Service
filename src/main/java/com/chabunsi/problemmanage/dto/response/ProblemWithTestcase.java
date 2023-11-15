@@ -14,6 +14,8 @@ public class ProblemWithTestcase {
     private Long id;
     private String title;
     private String content;
+    private int solve_num;
+    private int wrong_num;
     private int memory_limited;   // MB
     private int time_limited;   // msec
     private List<TestCase> testCaseList;
@@ -24,6 +26,8 @@ public class ProblemWithTestcase {
         this.id = problem.getId();
         this.title = problem.getTitle();
         this.content = problem.getContent();
+        this.solve_num = problem.getSolve_num();
+        this.wrong_num = problem.getWrong_num();
         this.memory_limited = problem.getMemory_limited();
         this.time_limited = problem.getTime_limited();
         this.testCaseList = problem.getTestCaseList();

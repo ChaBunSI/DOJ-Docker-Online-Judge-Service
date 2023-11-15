@@ -32,8 +32,7 @@ public class Problem {
     @Column
     private int wrong_num;
 
-    @OneToMany(mappedBy = "problem")
-    @JsonIgnore
+    @OneToMany(mappedBy = "problem", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<TestCase> testCaseList = new ArrayList<>();
 
     @Column

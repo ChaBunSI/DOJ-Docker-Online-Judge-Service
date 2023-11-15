@@ -1,4 +1,4 @@
-package com.chabunsi.problemmanage.message;
+package com.chabunsi.problemmanage.message.service;
 
 import com.chabunsi.problemmanage.config.AwsConfig;
 import lombok.AllArgsConstructor;
@@ -9,6 +9,10 @@ import software.amazon.awssdk.services.sns.model.PublishResponse;
 
 import java.util.Map;
 
+
+/*
+    TODO : 어떻게 보낼지 의논 필요.
+ */
 @Service
 @AllArgsConstructor
 public class SnsService {

@@ -22,13 +22,18 @@ public class ProblemBody {
 
     public Problem toEntity() {
 
-        return Problem.builder()
+        Problem problem = Problem.builder()
                 .title(title)
                 .content(content)
                 .solve_num(0)
                 .wrong_num(0)
                 .memory_limited(memory_limited)
                 .time_limited(time_limited).build();
+
+        List<TestCase> testCaseEntity = toTestCaseEntity(problem);
+        problem.setTestCaseList(testCaseEntity);
+
+        return problem;
     }
 
     public List<TestCase> toTestCaseEntity(Problem problem) {

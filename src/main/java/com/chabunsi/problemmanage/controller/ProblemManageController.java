@@ -4,6 +4,7 @@ import com.chabunsi.problemmanage.dto.request.ProblemBody;
 import com.chabunsi.problemmanage.dto.response.ProblemWithTestcase;
 import com.chabunsi.problemmanage.entity.Problem;
 import com.chabunsi.problemmanage.entity.TestCase;
+import com.chabunsi.problemmanage.message.service.SqsService;
 import com.chabunsi.problemmanage.projection.ProblemListItem;
 import com.chabunsi.problemmanage.service.ProblemService;
 import com.chabunsi.problemmanage.service.TestCaseService;
@@ -23,6 +24,7 @@ public class ProblemManageController {
 
     private final ProblemService problemService;
     private final TestCaseService testCaseService;
+    private final SqsService sqsService;
 
     // Read all item
     @GetMapping("/all")
@@ -46,7 +48,7 @@ public class ProblemManageController {
             @RequestBody @Validated ProblemBody problemBody
     ) {
         Problem problem = problemService.addProblem(problemBody);
-        List<TestCase> testCases = testCaseService.addTestCases(problemBody, problem);
+
 
         return ResponseEntity.ok(problem);
     }
@@ -68,5 +70,11 @@ public class ProblemManageController {
         problemService.deleteProblem(problemId);
         return ResponseEntity.ok("삭제되었습니다.");
     }
+
+/*    @PostMapping("/test")
+    public ResponseEntity<?> test() {
+        List<Message> messages = sqsService.();
+        return ResponseEntity.ok(messages.get(0).body());
+    }*/
 
 }

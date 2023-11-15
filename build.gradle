@@ -44,13 +44,15 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.9.0'
 
 	// SNS - SQS implementation
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6'
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap:3.0.3'
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws-messaging:2.2.6'
 
 	implementation platform("software.amazon.awssdk:bom:2.20.54")
 	implementation "software.amazon.awssdk:sns" // SNS 모듈 추가
 	implementation "software.amazon.awssdk:sqs" // SQS 모듈 추가
+
+	implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.0.1")
+	implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
 
 }
 
