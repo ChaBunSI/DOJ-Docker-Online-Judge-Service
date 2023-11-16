@@ -1,7 +1,6 @@
 # default
 
 # typing
-from typing import Dict
 
 # django dependencies
 from django.core.handlers.wsgi import WSGIRequest
@@ -20,9 +19,10 @@ from sub.utils import message_response, parse_value_from_request_or_json
 
 # common
 from common.topic_manager import publish_message
+from common.eureka_manager import ask_problem_to_pm
 
 # literals
-from sub.parameters import SOURCE, LANGUAGE, LANGUAGE_DEFAULT, LANGUAGE_C, LANGUAGE_JAVA, LANGUAGE_PYTHON, SOURCE_DEFAULT, USER_ID
+from sub.parameters import SOURCE, LANGUAGE, LANGUAGE_DEFAULT, LANGUAGE_C, LANGUAGE_JAVA, LANGUAGE_PYTHON, SOURCE_DEFAULT, USER_ID, ACCESS_TOKEN, APP_NAME_PM
 from settings.literals import AWS_SNS_TOPIC_SUBMIT
 
 # GET
@@ -42,11 +42,16 @@ def submit(request:WSGIRequest, problem_id:int):
     is_success = False
     ret_data = {}
     user_id = request.META.get(USER_ID, None)
+    access_token = request.META.get(ACCESS_TOKEN, None)
     
     # 답안 제출
     source = parse_value_from_request_or_json(request, SOURCE, SOURCE_DEFAULT)
     language_code = parse_value_from_request_or_json(request, LANGUAGE, LANGUAGE_DEFAULT)
     language_code = int(language_code)
+    
+    
+    # Get Limitations(Time/Memory) from P.M Server
+    limit_dict = ask_problem_to_pm(problem_id, {}, access_token)
     
     if(user_id is None or len(source)==0 or language_code not in [LANGUAGE_C, LANGUAGE_JAVA, LANGUAGE_PYTHON]):
         is_success = False
@@ -60,6 +65,8 @@ def submit(request:WSGIRequest, problem_id:int):
         )
         ret_data = SubmissionBasicSerializer(sub_object).data
         queue_data = SubmissionDetailSerializer(sub_object).data
+        queue_data["memory_limited"] = limit_dict.get("memory_limited", 100)
+        queue_data["time_limited"] = limit_dict.get("time_limited", 100)
         is_success = True
         
         

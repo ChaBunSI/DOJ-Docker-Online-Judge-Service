@@ -39,3 +39,4 @@ def parse_value_from_request_or_json(
     except Exception:
         ret_value = default_value
     return ret_value
+    

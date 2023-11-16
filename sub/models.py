@@ -16,3 +16,4 @@ class Submission(models.Model):
     end_time = models.DateTimeField(null=True, blank=True) # 채점 시간
     
     # 기타 Limitation 관련 내용들은 일단 포함시키지 않도록 하자
+    
