@@ -9,7 +9,7 @@ import sys
 # tasks
 from common.queue_manager import sqs_thread_exec
 def main():
-    sqs_thread_exec(["JudgeTask.fifo"])
+    sqs_thread_exec(["JudgeDone.fifo"])
     # interact_eureka()
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
