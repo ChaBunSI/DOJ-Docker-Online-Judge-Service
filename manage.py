@@ -3,15 +3,12 @@
 import os
 import sys
 
-# pip
-import django
 
 # tasks
 from common.queue_manager import sqs_thread_exec
 def main():
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
-    django.setup()
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
