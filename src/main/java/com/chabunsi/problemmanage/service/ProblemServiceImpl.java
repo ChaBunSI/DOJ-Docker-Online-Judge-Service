@@ -3,18 +3,24 @@ package com.chabunsi.problemmanage.service;
 import com.chabunsi.problemmanage.dto.request.ProblemBody;
 import com.chabunsi.problemmanage.dto.response.ProblemWithTestcase;
 import com.chabunsi.problemmanage.entity.Problem;
+import com.chabunsi.problemmanage.entity.TestCase;
 import com.chabunsi.problemmanage.except.CustomException;
 import com.chabunsi.problemmanage.except.Errors;
-import com.chabunsi.problemmanage.message.dto.ResultSubmit;
+import com.chabunsi.problemmanage.message.dto.receive.ResultSubmit;
+import com.chabunsi.problemmanage.message.service.SnsService;
 import com.chabunsi.problemmanage.projection.ProblemListItem;
 import com.chabunsi.problemmanage.repository.ProblemRepository;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,6 +28,7 @@ import java.util.Objects;
 public class ProblemServiceImpl implements ProblemService {
 
     private final ProblemRepository problemRepository;
+    private final SnsService snsService;
 
     @Override
     public List<ProblemListItem> getProblemList() {
@@ -35,11 +42,20 @@ public class ProblemServiceImpl implements ProblemService {
         return new ProblemWithTestcase(problem);
     }
 
+    @Transactional
     @Override
     public Problem addProblem(ProblemBody problemBody) {
         Problem problem = problemBody.toEntity();
         problemRepository.save(problem);
 
+        // 동기화
+        if(!problem.getTestCaseList().isEmpty()) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("eventType", "TestCase_ADD");
+            map.put("testCases", problem.getTestCaseList().stream().map(tc -> TestCase.builder().id(tc.getId()).input(tc.getInput()).output(tc.getOutput()).build()).collect(Collectors.toList()));
+            snsService.awsSnsPublish("TestCaseQueueing", "TestCaseEvent", map);
+        }
+        
         return problem;
     }
 

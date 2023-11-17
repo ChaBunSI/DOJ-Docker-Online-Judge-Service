@@ -1,4 +1,4 @@
-package com.chabunsi.problemmanage.message.dto;
+package com.chabunsi.problemmanage.message.dto.receive;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.Builder;

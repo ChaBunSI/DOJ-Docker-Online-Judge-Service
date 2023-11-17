@@ -1,6 +1,7 @@
 package com.chabunsi.problemmanage.message.service;
 
 import com.chabunsi.problemmanage.config.AwsConfig;
+import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.sns.SnsClient;
@@ -18,11 +19,14 @@ import java.util.Map;
 public class SnsService {
     private final AwsConfig awsConfig;
 
-    public PublishResponse awsSnsPublish(Map<String, Object> data) {
+    public PublishResponse awsSnsPublish(String subject, String messageGroupId, Map<String, Object> data) {
+        Gson gson = new Gson();
+
         PublishRequest publishRequest = PublishRequest.builder()
                 .topicArn(awsConfig.getSnsTopicARN())
-                .subject("TestCaseEvent")
-                .message(data.toString())
+                .subject(subject)
+                .message(gson.toJson(data))
+                .messageGroupId(messageGroupId)
                 .build();
 
         SnsClient snsClient = awsConfig.getSnsClient();

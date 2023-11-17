@@ -35,4 +35,13 @@ public class TestCase {
         this.output = testCaseBody.getOutput();
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+                "id=" + id +
+                ", input='" + input + '\'' +
+                ", output='" + output + '\'' +
+                '}';
+    }
+
 }
