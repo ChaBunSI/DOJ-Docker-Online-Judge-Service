@@ -8,8 +8,8 @@ services:
       - POSTGRES_DB=ngds
       - POSTGRES_USER=ngds
       - POSTGRES_PASSWORD=ngds
-    # volumes:
-    #   - ./psql_dir:/var/lib/postgresql/data
+    volumes:
+      - ./psql_dir:/var/lib/postgresql/data
   submission:
     container_name: submission_service
     environment:
