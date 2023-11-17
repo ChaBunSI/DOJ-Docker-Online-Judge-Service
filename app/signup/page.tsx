@@ -5,8 +5,11 @@ import styles from "../page.module.css";
 import Image from "next/image";
 import { useInput } from "@/hook/useInput";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
+  const router = useRouter();
+
   const [email, onChangeEmail] = useInput("");
   const [password, onChangePassword] = useInput("");
   const [passwordVerify, onChangePasswordVerify] = useInput("");
@@ -86,16 +89,21 @@ export default function SignUp() {
                   return;
                 }
 
-                const { data } = await axios.post(
-                  "https://api.goodpose.shop/auth/join",
-                  {
-                    email,
-                    password,
-                    name,
-                  }
-                );
+                try {
+                  const { data } = await axios.post(
+                    "https://api.goodpose.shop/auth/join",
+                    {
+                      email,
+                      password,
+                      name,
+                    }
+                  );
 
-                console.log(data);
+                  alert("회원가입 성공");
+                  router.push("/signin");
+                } catch {
+                  alert("회원가입 실패");
+                }
               }}
             >
               Sign Up

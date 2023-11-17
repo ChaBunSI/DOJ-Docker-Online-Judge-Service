@@ -61,7 +61,7 @@ export default function SignIn() {
               onClick={async () => {
                 try {
                   const { data } = await axios.post(
-                    "https://api.goodpose.shop//auth/login",
+                    "https://api.goodpose.shop/auth/login",
                     {
                       email,
                       password,
