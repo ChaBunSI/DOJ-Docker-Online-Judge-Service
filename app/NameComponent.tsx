@@ -23,14 +23,24 @@ export default function NameComponent() {
   }, []);
 
   return (
-    <div>
+    <>
       {userName === "" ? (
         <Link href={"/signin"} className={styles.description_auth_link}>
           Sign In/Up
         </Link>
       ) : (
-        <div>{userName} loggedIn</div>
+        <>
+          <div>{userName} loggedIn</div>
+          <button
+            onClick={() => {
+              localStorage.removeItem(LOCAL_STORAGE_JWT_KEY);
+              location.reload();
+            }}
+          >
+            Logout
+          </button>
+        </>
       )}
-    </div>
+    </>
   );
 }

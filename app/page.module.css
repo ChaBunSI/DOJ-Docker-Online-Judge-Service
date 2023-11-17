@@ -43,13 +43,14 @@
 
 .description_auth{
   display: flex;
+  /* width: 200px; */
   justify-content: center;
   align-items: center;
   gap: 1rem;
+  font-size: 1.2rem;
 }
 
 .description_auth_link{
-  font-size: 1.2rem;
   /* color: #999; */
 }
 
@@ -299,4 +300,19 @@
 .auth_small{
   font-size: 0.8rem;
   color: #999;
+}
+
+
+.description_auth button{
+  height: 30px;
+  border-radius: 5px;
+  border: transparent;
+  padding: 0 5px;
+  cursor: pointer;
+  background-color: #ff6262;
+}
+
+.description_auth button:hover{
+  background-color: #ff4f4f;
+  transition: 0.3s all;
 }
