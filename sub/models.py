@@ -7,7 +7,12 @@ class Submission(models.Model):
     user_id = models.IntegerField()
     is_passed = models.BooleanField(default=False) # has PASSED Judge?
     is_judged = models.BooleanField(default=False) # has ever entered to Judge?
-    judge_status = models.IntegerField(default=301) # 상태 코드
+    
+    
+    judge_status = models.IntegerField(default=0) # 상태 코드
+    judge_description = models.TextField(default="", null=True, blank=True)
+    error_message = models.TextField(default="", null=True, blank=True)
+    
     source = models.TextField(default="")
     language_code = models.IntegerField(default=0) # 언어 종류
     

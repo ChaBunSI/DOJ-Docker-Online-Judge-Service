@@ -8,7 +8,6 @@ from typing import Dict
 # pip
 from py_eureka_client import eureka_client
 
-
 # literals
 from settings import literals
 from sub import parameters
@@ -30,7 +29,7 @@ async def eureka_request_wrapper(app_name:str, service_name:str, data:Dict, meth
             headers = headers,
             method = method,
             data = data,
-            timeout=2,
+            timeout=1,
         )
     except Exception as e:
         print(f"eureka error -> {e}")
@@ -38,12 +37,12 @@ async def eureka_request_wrapper(app_name:str, service_name:str, data:Dict, meth
     return res
 
 def eureka_request(app_name:str, service_name:str, data:Dict, method:str="GET", token:str=""):
-    res = asyncio.run(eureka_request_wrapper(app_name, service_name, data, method, token))
-    return res
+    # res = asyncio.run(eureka_request_wrapper(app_name, service_name, data, method, token))
+    return None
 
 
 def ask_problem_to_pm(problem_id:int, data:Dict, token:str="")->Dict:
-    ret_obj = {"memory_limited": 100, "time_limited": 100}
+    ret_obj = {"memory_limited": 1000, "time_limited": 100}
     res:str = eureka_request(   
         app_name = parameters.APP_NAME_PM,
         service_name=f"/problem/{problem_id}",
@@ -59,5 +58,5 @@ def ask_problem_to_pm(problem_id:int, data:Dict, token:str="")->Dict:
             ret_obj["memory_limited"] = memory_limited
             ret_obj["time_limited"] = time_limited
     except: 
-        pass
+        ret_obj = {"memory_limited":100, "time_limited":100}
     return ret_obj

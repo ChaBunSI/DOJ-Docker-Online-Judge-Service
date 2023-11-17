@@ -22,7 +22,7 @@ from common.topic_manager import publish_message
 from common.eureka_manager import ask_problem_to_pm
 
 # literals
-from sub.parameters import SOURCE, LANGUAGE, LANGUAGE_DEFAULT, LANGUAGE_C, LANGUAGE_JAVA, LANGUAGE_PYTHON, SOURCE_DEFAULT, USER_ID, ACCESS_TOKEN, APP_NAME_PM
+from sub.parameters import SOURCE, LANGUAGE, LANGUAGE_DEFAULT, LANGUAGE_C, LANGUAGE_JAVA, LANGUAGE_PYTHON, SOURCE_DEFAULT, USER_ID, ACCESS_TOKEN, LANGUAGE_CPP
 from settings.literals import AWS_SNS_TOPIC_SUBMIT
 
 # GET
@@ -53,7 +53,7 @@ def submit(request:WSGIRequest, problem_id:int):
     # Get Limitations(Time/Memory) from P.M Server
     limit_dict = ask_problem_to_pm(problem_id, {}, access_token)
     
-    if(user_id is None or len(source)==0 or language_code not in [LANGUAGE_C, LANGUAGE_JAVA, LANGUAGE_PYTHON]):
+    if(user_id is None or len(source)==0 or language_code not in [LANGUAGE_C, LANGUAGE_JAVA, LANGUAGE_PYTHON, LANGUAGE_CPP]):
         is_success = False
         ret_data = {}
     else:

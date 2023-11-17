@@ -5,7 +5,7 @@ def get_env_value(key:str, default_value:str):
     if ret_value is None:
         ret_value = default_value
         
-    print(f"[ENV] (K: {key} || V: {ret_value}")    
+    # print(f"[ENV] (K: {key} || V: {ret_value}")    
     
     return ret_value
 

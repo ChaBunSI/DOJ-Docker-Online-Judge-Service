@@ -2,13 +2,19 @@
 import json
 
 # typing
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 # pip
 
 # django
 from django.http import JsonResponse
 from django.core.handlers.wsgi import WSGIRequest
+from django.db.models import Q
+from django.utils import timezone
+
+# custom
+from sub.models import Submission
+from sub.parameters import JC_DICT
 
 def create_message(message:Dict, is_success:bool=True):
     ret_data = {}
@@ -40,3 +46,46 @@ def parse_value_from_request_or_json(
         ret_value = default_value
     return ret_value
     
+    
+def process_submission(message_batch:List[Dict]):
+    query_object = Q()
+    target_submissions = []
+    sub_update_bulk_list = []
+    temp_dict = {} # id: value
+        
+    for msg_item in message_batch:
+        submission_id = msg_item.get("submission_id")
+        judge_status = msg_item.get("judge_status")
+        error_message = msg_item.get("error_message")
+        if judge_status is not None:
+            judge_status = int(judge_status)
+            judge_descsription = JC_DICT.get(judge_status, "")
+            query_object.add(Q(id=submission_id), query_object.OR)
+            temp_dict[submission_id] = {"judge_status": judge_status, "error_message":error_message, "judge_description": judge_descsription}
+    
+    if query_object:
+        target_submissions = list(Submission.objects.filter(query_object))
+        for sub_item in target_submissions:
+            sub_id = sub_item.id
+            temp_item = temp_dict.get(sub_id)
+            if temp_item is not None:
+                sub_item.judge_status = temp_item.get("judge_status")
+                sub_item.judge_description = temp_item.get("judge_description", "")
+                sub_item.error_message = temp_item.get("error_message", "")
+                sub_item.end_time = timezone.localtime()
+                sub_update_bulk_list.append(sub_item)
+        
+
+    if sub_update_bulk_list:
+        Submission.objects.bulk_update(
+            sub_update_bulk_list, 
+            fields = [
+                "judge_status",
+                "judge_description",
+                "error_message",
+                "end_time",
+            ]
+        )
+        
+    print(f"Updated {len(sub_update_bulk_list)} Submissions")
+            

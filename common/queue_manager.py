@@ -1,15 +1,22 @@
 # default
-import time
 from threading import Thread
+import json
+import os
 
 # typing 
-from typing import List
+from typing import List, Dict
 
 # pip
 import boto3
+import django
+
+# Should be done before import apps
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
+django.setup()
 
 # custom
 from settings import literals
+from sub.utils import process_submission
 
 session = boto3.Session(
     aws_access_key_id=literals.AWS_ACCESS_KEY,
@@ -26,10 +33,44 @@ def sqs_consume(queue_name:str):
             MaxNumberOfMessages=10,
             WaitTimeSeconds=10,
         )
-        for message in messages:
-            print("=================================================")
-            print(f"[{queue_name}] => {message.body}")
-            print("===================================================")
+        delete_batch = []
+        message_batch = []
+        id_list = []
+        for msg in messages:
+            message_body = msg.body
+            receipt_handle = msg.receipt_handle
+            message_id = msg.message_id
+            delete_batch.append(
+                {
+                    "Id": message_id,
+                    "ReceiptHandle": receipt_handle,
+                }
+            )
+            
+            body_object = json.loads(message_body)
+            message_item:Dict = body_object.get("Message")
+            
+            # do Database Actions (in bulk)
+            submission_id = message_item.get("id")
+            judge_result = message_item.get("judge_result")
+            error_message = message_item.get("error_message")
+            
+            id_list.append(submission_id)
+            message_batch.append(
+                {
+                    "id": submission_id,
+                    "judge_result": judge_result,
+                    "error_message": error_message,
+                }
+            )
+            
+        if message_batch:
+            print(f"Processing {len(message_batch)} Submissions..")
+            process_submission(message_batch)
+        
+        if delete_batch:
+            target_queue.delete_messages(Entries = delete_batch)
+            print(f"Deleting {len(delete_batch)} items")
     
     
 def sqs_thread_exec(queue_names:List[str]):

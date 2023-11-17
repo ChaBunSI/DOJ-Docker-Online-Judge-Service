@@ -48,4 +48,4 @@ def publish_message(topic:str, data:Dict):
         Subject = literals.AWS_SNS_SUBJECT_SUBMIT,
         MessageDeduplicationId=str(uuid.uuid4()),
     )
-    print(message_sent)
+    print(f"Message Sent -> {data}")
