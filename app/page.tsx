@@ -1,10 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import styles from "./page.module.css";
 import Link from "next/link";
+import Head from "next/head";
+import NameComponent from "./nameComponent";
 
 export default function Home() {
   return (
     <main className={styles.main}>
+      <Head>
+        <title>Docker Online Judege</title>
+      </Head>
       <div className={styles.description}>
         <Link href={"/"} className={styles.logo_wrapper}>
           <Image
@@ -17,12 +24,9 @@ export default function Home() {
           />
         </Link>
         <div className={styles.description_auth}>
-          <Link href={"/signin"} className={styles.description_auth_link}>
-            Sign In/Up
-          </Link>
+          <NameComponent />
         </div>
       </div>
-
       <div className={styles.center}>
         <Image
           className={styles.logo}

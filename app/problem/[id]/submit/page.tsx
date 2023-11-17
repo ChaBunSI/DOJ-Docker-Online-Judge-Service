@@ -9,9 +9,6 @@ import { useEffect } from "react";
 
 export default function Problem() {
   const { id } = useParams();
-  useEffect(() => {
-    console.log("hello");
-  }, []);
   return (
     <main className={pStyles.main}>
       <div className={styles.description}>

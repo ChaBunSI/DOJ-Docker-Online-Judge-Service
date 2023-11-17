@@ -1,8 +1,19 @@
+"use client";
+
 import Link from "next/link";
 import styles from "../page.module.css";
 import Image from "next/image";
+import axios from "axios";
+import { useInput } from "@/hook/useInput";
+import { LOCAL_STORAGE_JWT_KEY } from "@/global";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
+  const router = useRouter();
+
+  const [email, onChangeEmail] = useInput("");
+  const [password, onChangePassword] = useInput("");
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
@@ -24,7 +35,13 @@ export default function SignIn() {
             <label htmlFor="email" className={styles.auth_label}>
               Email
             </label>
-            <input type="text" id="email" className={styles.auth_input} />
+            <input
+              type="text"
+              id="email"
+              className={styles.auth_input}
+              value={email}
+              onChange={onChangeEmail}
+            />
           </div>
           <div className={styles.auth_line}>
             <label htmlFor="password" className={styles.auth_label}>
@@ -34,10 +51,37 @@ export default function SignIn() {
               type="password"
               id="password"
               className={styles.auth_input}
+              value={password}
+              onChange={onChangePassword}
             />
           </div>
           <div className={styles.auth_line}>
-            <button className={styles.auth_button}>Sign In</button>
+            <button
+              className={styles.auth_button}
+              onClick={async () => {
+                try {
+                  const { data } = await axios.post(
+                    "http://34.64.213.211/auth/login",
+                    {
+                      email,
+                      password,
+                    }
+                  );
+
+                  window.localStorage.setItem(
+                    LOCAL_STORAGE_JWT_KEY,
+                    data.accessToken
+                  );
+
+                  alert("로그인 성공");
+                  router.push("/");
+                } catch {
+                  alert("로그인 실패");
+                }
+              }}
+            >
+              Sign In
+            </button>
           </div>
           <div className={styles.auth_line}>
             <Link href={"/signup"} className={styles.auth_link}>
