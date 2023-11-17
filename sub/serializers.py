@@ -14,6 +14,7 @@ class SubmissionBasicSerializer(serializers.ModelSerializer):
             "is_passed",
             "is_judged",
             "judge_status",
+            "judge_description",
             "language_code",
             "created_time",
             "start_time",

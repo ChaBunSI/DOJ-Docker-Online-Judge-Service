@@ -22,7 +22,7 @@ from common.topic_manager import publish_message
 from common.eureka_manager import ask_problem_to_pm
 
 # literals
-from sub.parameters import SOURCE, LANGUAGE, LANGUAGE_DEFAULT, LANGUAGE_C, LANGUAGE_JAVA, LANGUAGE_PYTHON, SOURCE_DEFAULT, USER_ID, ACCESS_TOKEN, LANGUAGE_CPP
+from sub.parameters import SOURCE, LANGUAGE, LANGUAGE_DEFAULT, LANGUAGE_C, LANGUAGE_JAVA, LANGUAGE_PYTHON, SOURCE_DEFAULT, USER_ID, ACCESS_TOKEN, LANGUAGE_CPP, JC_NJ, JC_NJ_DESC
 from settings.literals import AWS_SNS_TOPIC_SUBMIT
 
 # GET
@@ -62,6 +62,8 @@ def submit(request:WSGIRequest, problem_id:int):
             user_id = user_id,
             source = source,
             language_code = language_code,
+            judge_status=JC_NJ,
+            judge_description = JC_NJ_DESC,
         )
         ret_data = SubmissionBasicSerializer(sub_object).data
         queue_data = SubmissionDetailSerializer(sub_object).data
@@ -91,9 +93,8 @@ def submission(request:WSGIRequest, problem_id:int=-1):
     if(problem_id!=-1 and user_id is not None):
         query_object.add(Q(user_id=user_id), query_object.AND)
         query_object.add(Q(problem_id=problem_id), query_object.AND)
-        submission_result = Submission.objects.filter(query_object)
         
-        queryset = Submission.objects.filter(submission_result)
+        queryset = Submission.objects.filter(query_object)
         if(queryset.exists()):
             ret_data = SubmissionBasicSerializer(queryset, many=True).data
             is_success = True

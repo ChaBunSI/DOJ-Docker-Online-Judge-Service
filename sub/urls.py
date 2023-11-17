@@ -3,21 +3,16 @@ from django.urls import path
 # from django.urls import re_path
 
 # apis
-from sub.api import hello, submission, submit, submit_detail, submissions
+from sub.api import submission, submit, submit_detail, submissions
 
 urlpatterns = [
-    path(
-        "hello",
-        hello,
-        name="hello",
-    ),
     path(
         "submit/<int:problem_id>",
          submit,
          name="submit"
     ),
     path(
-        "submission",
+        "submission/<int:problem_id>",
         submission,
         name="submission",
     ),
