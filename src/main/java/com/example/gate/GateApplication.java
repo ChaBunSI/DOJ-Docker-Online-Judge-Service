@@ -31,6 +31,20 @@ public class GateApplication {
 						)
 						.uri("lb://AUTH-SERVICE")
 				)
+				.route(p -> p
+						.path("/submission/**")
+						.filters(f -> f
+								.rewritePath("/submission", "/")
+						)
+						.uri("lb://SUBMISSION-SERVICE")
+				)
+				.route(p -> p
+						.path("/problem/**")
+						.filters(f -> f
+								.rewritePath("/problem", "/")
+						)
+						.uri("lb://PROBLEM-MANAGE-SERVICE")
+				)
 				.build();
 	}
 
