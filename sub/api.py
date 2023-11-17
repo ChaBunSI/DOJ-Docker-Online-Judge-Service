@@ -106,7 +106,7 @@ def submission(request:WSGIRequest, problem_id:int=-1):
 @csrf_exempt
 @require_http_methods(["GET"])
 def submissions(request:WSGIRequest): 
-    # 이 유저의 모든 제출을 확인
+    # 이 유저 혹은 모든 유저의 모든 제출을 확인
     user_id = request.META.get(USER_ID, None)
     query_object = Q()
     
@@ -119,9 +119,24 @@ def submissions(request:WSGIRequest):
         queryset = Submission.objects.filter(query_object)
         if(queryset.exists()):
             ret_data = SubmissionBasicSerializer(queryset, many=True).data
-        
     
     return message_response(ret_data, is_success)
+
+@csrf_exempt
+@require_http_methods(["GET"])
+def all_submissions(request:WSGIRequest):
+    is_success = False
+    ret_data = {}
+    
+    user_id = request.META.get(USER_ID, None)
+    if user_id is not None:    
+        queryset = Submission.objects.all()
+        if(queryset.exists()):
+            is_success = True
+            ret_data = SubmissionBasicSerializer(queryset, many=True).data
+        
+    return message_response(ret_data, is_success)
+
 
 @csrf_exempt
 @require_http_methods(["GET"])

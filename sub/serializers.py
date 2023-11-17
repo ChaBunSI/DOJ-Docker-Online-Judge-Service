@@ -11,6 +11,7 @@ class SubmissionBasicSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "problem_id",
+            "user_id",
             "is_passed",
             "is_judged",
             "judge_status",
@@ -26,6 +27,7 @@ class SubmissionDetailSerializer(serializers.ModelSerializer):
         model = Submission
         fields = [
             "id",
+            "problem_id",
             "user_id",
             "is_passed",
             "is_judged",

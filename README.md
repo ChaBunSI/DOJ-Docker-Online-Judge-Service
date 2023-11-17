@@ -32,6 +32,7 @@ django + (SQS, SNS)
 - 제출 상세 확인
 - 특정 문제에 대한 사용자의 제출 목록 확인
 - 사용자의 모든 제출 목록 확인
+- 모든 사용자의 모든 제출 목록 확인
 
 ** 모든 요청에는 JWT 를 포함해줘야 한다 **
 
@@ -64,6 +65,7 @@ POST /submit/1
 {
     "data": {
         "id": 11,
+        "user_id",
         "problem_id": 1,
         "is_passed": false,
         "is_judged": false,
@@ -112,6 +114,7 @@ POST /submit/1
         {
             "id": 11,
             "problem_id": 1,
+            "user_id": 1,
             "is_passed": false,
             "is_judged": false,
             "judge_status": 0,
@@ -135,6 +138,7 @@ POST /submit/1
     "data": [
         {
             "id": 11,
+            "user_id":1,
             "problem_id": 1,
             "is_passed": false,
             "is_judged": false,
@@ -150,6 +154,30 @@ POST /submit/1
 }
 ```
 
+### 5. 모든 사용자의 모든 제출 목록 확인
+- GET /all_submissions
+
+```
+{
+    "data": [
+        {
+            "id": 1,
+            "problem_id": 1,
+            "user_id": 1,
+            "is_passed": false,
+            "is_judged": false,
+            "judge_status": 0,
+            "judge_description": "Not Judged",
+            "language_code": 1,
+            "created_time": "2023-11-17T18:35:20.112064+09:00",
+            "start_time": "2023-11-17T18:35:20.113885+09:00",
+            "end_time": null
+        }
+    ],
+    "is_success": true
+}
+
+```
 
 ## 구현 진행 상황
 - SQS Subscribe -> Daemon Thread 서버 기동시에 실행
