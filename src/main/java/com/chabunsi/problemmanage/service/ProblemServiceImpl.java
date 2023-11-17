@@ -4,13 +4,13 @@ import com.chabunsi.problemmanage.dto.request.ProblemBody;
 import com.chabunsi.problemmanage.dto.response.ProblemWithTestcase;
 import com.chabunsi.problemmanage.entity.Problem;
 import com.chabunsi.problemmanage.entity.TestCase;
+import com.chabunsi.problemmanage.enums.JudgeResult;
 import com.chabunsi.problemmanage.except.CustomException;
 import com.chabunsi.problemmanage.except.Errors;
 import com.chabunsi.problemmanage.message.dto.receive.ResultSubmit;
 import com.chabunsi.problemmanage.message.service.SnsService;
 import com.chabunsi.problemmanage.projection.ProblemListItem;
 import com.chabunsi.problemmanage.repository.ProblemRepository;
-import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -79,16 +79,11 @@ public class ProblemServiceImpl implements ProblemService {
     @Transactional
     @Override
     public void updateByResultSubmit(ResultSubmit submit) {
-        if(submit.getProblemId() == null || submit.getEventType() == null) {
-            throw new CustomException(Errors.PROBLEM_NOT_FOUND);
-        }
+        Problem problem = problemRepository.getReferenceById(submit.getProblem_id());
 
-
-        Problem problem = problemRepository.getReferenceById(submit.getProblemId());
-
-        if(Objects.equals(submit.getEventType(), "solve")) {
+        if(submit.getJudge_result() == JudgeResult.AC.getValue()) {
             problem.setSolve_num(problem.getSolve_num() + 1);
-        } else if (Objects.equals(submit.getEventType(), "wrong")) {
+        } else {
             problem.setWrong_num(problem.getWrong_num() + 1);
         }
     }

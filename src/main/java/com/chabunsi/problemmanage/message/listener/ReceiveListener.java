@@ -26,8 +26,10 @@ public class ReceiveListener {
         System.out.println(message);
         Gson gson = new Gson();
 
-        // TODO : Judge Done 메세지 타입에 따라 수정해야 함.
-        problemService.updateByResultSubmit(gson.fromJson(message.getMessage(), ResultSubmit.class));
+        ResultSubmit resultSubmit = gson.fromJson(message.getMessage(), ResultSubmit.class);
+
+        if(resultSubmit != null)
+            problemService.updateByResultSubmit(resultSubmit);
 
 
     }

@@ -10,7 +10,13 @@ import lombok.ToString;
 @JsonAutoDetect
 @ToString
 public class ResultSubmit {
-    private Long problemId;
-    private String eventType;
+    private Long id;
+    private Long user_id;
+    private Long problem_id;
+    private int language_code;
+    private int memory_limited;
+    private int time_limited;
+    private int judge_result;
+    private String error_message;
 
 }
