@@ -71,7 +71,7 @@ export default function SignUp() {
             </label>
             <input
               type="password"
-              id="password"
+              id="passwordVerify"
               className={styles.auth_input}
               value={passwordVerify}
               onChange={onChangePasswordVerify}
@@ -87,7 +87,7 @@ export default function SignUp() {
                 }
 
                 const { data } = await axios.post(
-                  "http://34.64.213.211/auth/join",
+                  "https://api.goodpose.shop/auth/join",
                   {
                     email,
                     password,
