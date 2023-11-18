@@ -17,7 +17,7 @@ def auth_middleware(get_response):
             token_data: Dict = jwt.decode(
                 token_value, options={"verify_signature": False}
             )
-            user_id = token_data["user_id"]
+            user_id = token_data["userId"]
             request.META["access_token"] = access_token
             request.META["user_id"] = user_id
         except:
