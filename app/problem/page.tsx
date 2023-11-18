@@ -2,8 +2,14 @@ import Link from "next/link";
 import styles from "../page.module.css";
 import pStyles from "../problem.module.css";
 import Image from "next/image";
+import { ProblemListItemDataInterface, axiosGroup } from "@/global";
 
-export default function Problems() {
+export default async function Problems() {
+  const {
+    data: problemData,
+  }: {
+    data: ProblemListItemDataInterface[];
+  } = await axiosGroup.default.get("/problem_service/problem/all");
   return (
     <main className={pStyles.main}>
       <div className={styles.description}>
@@ -22,13 +28,15 @@ export default function Problems() {
         <div className={pStyles.problem_wrapper}>
           <h1>Problems</h1>
           <div className={pStyles.problem_list}>
-            {[1, 2, 3].map((i) => (
+            {problemData.map((item) => (
               <Link
-                href={"/problem/" + i}
-                key={i}
+                href={"/problem/" + item.id}
+                key={item.id}
                 className={pStyles.problem_block}
               >
-                <h2>Problem Name</h2>
+                <h2>
+                  {item.title} #{item.id}
+                </h2>
                 <p>Problem Description</p>
               </Link>
             ))}

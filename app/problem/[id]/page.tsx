@@ -1,17 +1,16 @@
-"use client";
-
 import Link from "next/link";
 import styles from "../../page.module.css";
 import pStyles from "../../problem.module.css";
 import Image from "next/image";
-import { useEffect } from "react";
-import { useParams } from "next/navigation";
+import { ProblemDataInterface, axiosGroup } from "@/global";
 
-export default function Problem() {
-  const { id } = useParams();
-  useEffect(() => {
-    console.log("hello");
-  }, []);
+export default async function Problem({ params: { id } }: any) {
+  const {
+    data: problemData,
+  }: {
+    data: ProblemDataInterface;
+  } = await axiosGroup.default.get("/problem_service/problem/" + id);
+
   return (
     <main className={pStyles.main}>
       <div className={styles.description}>
@@ -32,14 +31,20 @@ export default function Problem() {
             <Link href={"/problem"} className={pStyles.arrow}>
               &lt;-
             </Link>
-            <h1>Problem Name</h1>
+            <h1>
+              {problemData.title} #{problemData.id}
+            </h1>
             <Link href={"/problem/" + id + "/submit"}>Submit</Link>
           </div>
           <div className={pStyles.problem_chunk}>
             <h2>Description</h2>
+            <p>{problemData.content}</p>
+          </div>
+          <div className={pStyles.problem_chunk}>
+            <h2>Limitation</h2>
             <p>
-              두 정수 A와 B를 입력받은 다음, A+B를 출력하는 프로그램을
-              작성하시오.
+              시간 제한: {problemData.time_limited}초, 메모리 제한:{" "}
+              {problemData.memory_limited}MB
             </p>
           </div>
           <div className={pStyles.problem_chunk}>
@@ -55,14 +60,14 @@ export default function Problem() {
               <h2>Input Example</h2>
               <textarea
                 readOnly
-                value={`1 2\npen apple\npen pineapple\napplepen pineapplepen`}
+                value={problemData.testCaseList[0].input}
               ></textarea>
             </div>
             <div className={pStyles.problem_chunk}>
               <h2>Output</h2>
               <textarea
                 readOnly
-                value={`3\napplepen\npineapplepen\npenpineappleapplepen`}
+                value={problemData.testCaseList[0].output}
               ></textarea>
             </div>
           </div>

@@ -1,14 +1,17 @@
-"use client";
-
 import Link from "next/link";
 import styles from "../../../page.module.css";
 import pStyles from "../../../problem.module.css";
 import Image from "next/image";
-import { useParams } from "next/navigation";
-import { useEffect } from "react";
+import { ProblemDataInterface, axiosGroup } from "@/global";
+import SubmitForm from "./SubmitForm";
 
-export default function Problem() {
-  const { id } = useParams();
+export default async function ProblemSubmission({ params: { id } }: any) {
+  const {
+    data: problemData,
+  }: {
+    data: ProblemDataInterface;
+  } = await axiosGroup.api.get("/problem_service/problem/" + id);
+
   return (
     <main className={pStyles.main}>
       <div className={styles.description}>
@@ -24,42 +27,8 @@ export default function Problem() {
         </Link>
       </div>
       <div className={styles.center}>
-        <div className={pStyles.problem_wrapper}>
-          <div className={pStyles.problem_header}>
-            <Link href={"/problem/" + id} className={pStyles.arrow}>
-              &lt;-
-            </Link>
-            <h1>Submit For Problem Name</h1>
-            <div></div>
-          </div>
-          <div className={pStyles.problem_chunk}>
-            <h2>Submit Code</h2>
-            <textarea placeholder="Write Down Your Code"></textarea>
-          </div>
-          {/* make radio button for language selection */}
-          <div className={pStyles.problem_chunk}>
-            <h2>Language</h2>
-            <div className={pStyles.problem_ioblock}>
-              <input
-                type="radio"
-                name="language"
-                value="spanish"
-                checked
-                readOnly
-              />
-              <label>Spanish</label>
-              <input type="radio" name="language" value="cpp" readOnly />
-              <label>C++</label>
-              <input type="radio" name="language" value="java" readOnly />
-              <label>Java</label>
-              <input type="radio" name="language" value="python" readOnly />
-              <label>Python</label>
-            </div>
-            <button className={pStyles.submit_button}>제출</button>
-          </div>
-        </div>
+        <SubmitForm problemData={problemData} />
       </div>
-      <div></div>
     </main>
   );
 }
