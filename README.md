@@ -89,6 +89,7 @@ POST /submit/1
     "data": {
         "id": 10,
         "user_id": 1,
+        "problem_id":34641,
         "is_passed": false,
         "is_judged": false,
         "judge_status": 0,
