@@ -53,9 +53,10 @@ def process_submission(message_batch:List[Dict]):
     sub_update_bulk_list = []
     temp_dict = {} # id: value
         
+        
     for msg_item in message_batch:
-        submission_id = msg_item.get("submission_id")
-        judge_status = msg_item.get("judge_status")
+        submission_id = msg_item.get("id")
+        judge_status = msg_item.get("judge_result")
         error_message = msg_item.get("error_message")
         if judge_status is not None:
             judge_status = int(judge_status)

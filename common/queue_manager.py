@@ -2,6 +2,7 @@
 from threading import Thread
 import json
 import os
+import traceback
 
 # typing 
 from typing import List, Dict
@@ -72,6 +73,7 @@ def sqs_consume(queue_name:str):
                         }
                     )
                 except Exception as e:
+                    traceback.print_exc()
                     print(e)
                     
             
