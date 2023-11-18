@@ -2,8 +2,15 @@ import Link from "next/link";
 import styles from "../../page.module.css";
 import pStyles from "../../problem.module.css";
 import Image from "next/image";
+import { SubmitDataInterface, axiosGroup, getLanguage } from "@/global";
 
-export default function Submission() {
+export default async function Submission({ params: { id } }: any) {
+  const {
+    data: { data: submitData },
+  }: {
+    data: { data: SubmitDataInterface };
+  } = await axiosGroup.default.get("/submission_service/submit_detail/" + id);
+
   return (
     <main className={pStyles.main}>
       <div className={styles.description}>
@@ -24,18 +31,28 @@ export default function Submission() {
             <Link href={"/submission"} className={pStyles.arrow}>
               &lt;-
             </Link>
-            <h1>Submission ID / Problem Id / User Id</h1>
+            <h1>
+              Submission #{submitData.id} (Problem #{submitData.problem_id})
+            </h1>
             <div></div>
           </div>
           <div className={pStyles.problem_chunk}>
             <h2>Submit Code</h2>
-            <textarea readOnly>
-              {`1 2\npen apple\npen pineapple\napplepen pineapplepen
-                `}
-            </textarea>
-            <p>Submitted At: 2023/11/14 10:19</p>
-            <p>Code Info: Spanish (123 B)</p>
-            <p className={pStyles.ac}>Result: AC (Time: 255ms, Mem: 999TB)</p>
+            <textarea readOnly value={submitData.source}></textarea>
+            <p>Submitted At: {submitData.created_time}</p>
+            <p>Program Language: {getLanguage(submitData.language_code)}</p>
+            <p
+              className={
+                submitData.judge_status === 0
+                  ? ""
+                  : submitData.judge_status === 1
+                  ? pStyles.ac
+                  : pStyles.wa
+              }
+            >
+              Result: {submitData.judge_description}{" "}
+              {submitData.judge_status === 1 && `(Time: 255ms, Mem: 999TB)`}
+            </p>
           </div>
         </div>
       </div>

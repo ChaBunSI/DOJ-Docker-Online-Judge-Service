@@ -94,7 +94,7 @@ export default function SubmitForm({
               );
               alert("제출 성공");
 
-              router.push("/submission/" + problemData.id);
+              router.push("/submission/" + data.data.id);
             } catch {
               alert("제출 실패");
             }
