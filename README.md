@@ -28,15 +28,17 @@ DOJ의 문제 관리 서비스입니다.
 
 ## Problem Table
 
-| key            | type | Description |
-|----------------|------|-------------|
-| id(PK)         | Long | 고유키         |
-| title          | Text | 문제 제목       |
-| content        | Text | 문제 내용       |
-| solve_num      | int  | 맞춘 횟수       |
-| wrong_num      | int  | 틀린 횟수       |
-| time_limited   | int  | 시간 제한(msec) |
-| memory limited | int  | 메모리 제한(mb)  | 
+| key                | type | Description |
+|--------------------|------|-------------|
+| id(PK)             | Long | 고유키         |
+| title              | Text | 문제 제목       |
+| content            | Text | 문제 내용       |
+| input_description  | Text | Input 설명    |
+| output_description | Text | Output 설명   |
+| solve_num          | int  | 맞춘 횟수       |
+| wrong_num          | int  | 틀린 횟수       |
+| time_limited       | int  | 시간 제한(msec) |
+| memory limited     | int  | 메모리 제한(mb)  | 
 
 ## TestCase Table
 
@@ -62,6 +64,8 @@ DOJ의 문제 관리 서비스입니다.
 |---------------------|--------------|----------------|
 | title               | Text         | 문제 제목          |
 | content             | Text         | 문제 내용          |
+| input_description  | Text | Input 설명    |
+| output_description | Text | Output 설명   |
 | memory_limited      | Text         | Input 예제       |
 | time_limited        | Text         | Output 예제      |
 | testCaseBodyList    | TestCaseBody | 테스트 케이스 리스트    |
@@ -70,16 +74,44 @@ DOJ의 문제 관리 서비스입니다.
 
 
 #### Response
-| key            | type   | Description    |
-|----------------|--------|----------------|
-| title          | Text   | 문제 제목          |
-| content        | Text   | 문제 내용          |
-| solve_num      | int    | 맞춘 횟수       |
-| wrong_num      | int    | 틀린 횟수       |
-| memory_limited | Text   | Input 예제       |
-| time_limited   | Text   | Output 예제      |
+| key                | type     | Description   |
+|--------------------|----------|---------------|
+| title              | Text     | 문제 제목         |
+| content            | Text     | 문제 내용         |
+| input_description  | Text     | Input 설명      |
+| output_description | Text     | Output 설명     |
+| solve_num          | int      | 맞춘 횟수         |
+| wrong_num          | int      | 틀린 횟수         |
+| testCaseList       | TestCase | TestCase List |
+| memory_limited     | Text     | Input 예제      |
+| time_limited       | Text     | Output 예제     |
 
-![img.png](img.png)
+#### Response Example
+```json
+{
+  "id": 18,
+  "title": "제목5",
+  "content": "문제 내용5",
+  "input_description": "인풋 설명1",
+  "output_description": "아웃풋 설명1",
+  "solve_num": 0,
+  "wrong_num": 0,
+  "testCaseList": [
+    {
+      "id": 49,
+      "input": "1 1 1\n1 1",
+      "output": "성공!"
+    },
+    {
+      "id": 50,
+      "input": "2 2 2\n2 2",
+      "output": "실패패!"
+    }
+  ],
+  "time_limited": 100,
+  "memory_limited": 100
+}
+```
 
 ### 문제 조회
 - Method : Get
@@ -98,6 +130,8 @@ DOJ의 문제 관리 서비스입니다.
 | id(PK)          | Long     | 고유키         |
 | title           | Text     | 문제 제목       |
 | content         | Text     | 문제 내용       |
+| input_description  | Text | Input 설명    |
+| output_description | Text | Output 설명   |
 | memory_limited  | Text     | Input 예제    |
 | time_limited    | Text     | Output 예제   |
 | testCaseList    | TestCase | 테스트 케이스 리스트 |
@@ -105,7 +139,32 @@ DOJ의 문제 관리 서비스입니다.
 | TestCase.input  | Text     | 입력 예제       |
 | TestCase.output | Text     | 출력 예제       |
 
-![img_1.png](img_1.png)
+#### Response Example
+```json
+{
+    "id": 18,
+    "title": "제목5",
+    "content": "문제 내용5",
+    "input_description": "인풋 설명1",
+    "output_description": "아웃풋 설명1",
+    "solve_num": 0,
+    "wrong_num": 0,
+    "memory_limited": 100,
+    "time_limited": 100,
+    "testCaseList": [
+        {
+            "id": 49,
+            "input": "1 1 1\n1 1",
+            "output": "성공!"
+        },
+        {
+            "id": 50,
+            "input": "2 2 2\n2 2",
+            "output": "실패패!"
+        }
+    ]
+}
+```
 
 ### 문제 Item 전체 조회
 - Method : Get
@@ -114,7 +173,23 @@ DOJ의 문제 관리 서비스입니다.
 #### PathVariable : None
 
 #### Response
-![img_2.png](img_2.png)
+| key             | type               | Description     |
+|-----------------|--------------------|-----------------|
+| ProblemItemList | List<ProblemItem\> | ProblemItem 리스트 |
+
+
+#### Response Example
+```json
+[
+    {
+        "id": 1,
+        "title": "제목5",
+        "wrong_num": 0,
+        "solve_num": 0
+    }
+    
+]
+```
 
 ### 문제 삭제
 - Method : Delete
@@ -142,12 +217,14 @@ DOJ의 문제 관리 서비스입니다.
 
 #### RequestBody
 
-| key            | type         | Description    |
-|----------------|--------------|----------------|
-| title          | Text         | 문제 제목          |
-| content        | Text         | 문제 내용          |
-| memory_limited | Text         | Input 예제       |
-| time_limited   | Text         | Output 예제      |
+| key                | type  | Description   |
+|--------------------|-------|---------------|
+| title              | Text  | 문제 제목         |
+| content            | Text  | 문제 내용        | 
+| input_description  | Text  | Input 설명      |
+| output_description | Text  | Output 설명     |
+| memory_limited     | Text  | Input 예제      |
+| time_limited       | Text  | Output 예제     |
 
 #### Response
 
@@ -227,6 +304,7 @@ __TestCase -> DOJ-TestCase-Queueing.fifo__ :
 ```
 // ADD
 {
+    "problemId": 1,
     "testCases" : [
         {
             "id": 1,
@@ -241,6 +319,7 @@ __TestCase -> DOJ-TestCase-Queueing.fifo__ :
 ```
 // UPDATE
 {
+    "problemId": 1,
     "testCases" : [
         {
             "id": 1,
@@ -255,6 +334,7 @@ __TestCase -> DOJ-TestCase-Queueing.fifo__ :
 ```
 // DELETE
 {
+    "problemId": 1,
     "testCases" : [
         {
             "id": 1,
@@ -284,7 +364,7 @@ __TestCase -> DOJ-TestCase-Queueing.fifo__ :
   "SequenceNumber" : "10000000000000027000",
   "TopicArn" : "arn:aws:sns:ap-northeast-2:262981387273:DOJ-TestCase-Queueing.fifo",
   "Subject" : "TestCaseQueueing",
-  "Message" : "{\"testCases\":[{\"id\":47,\"input\":\"1 1 1\\n1 1\",\"output\":\"성공!\"},{\"id\":48,\"input\":\"2 2 2\\n2 2\",\"output\":\"실패패!\"}],\"eventType\":\"TestCase_ADDED\"}",
+  "Message" : "{\"problemId\":1, \"testCases\":[{\"id\":47,\"input\":\"1 1 1\\n1 1\",\"output\":\"성공!\"},{\"id\":48,\"input\":\"2 2 2\\n2 2\",\"output\":\"실패패!\"}],\"eventType\":\"TestCase_ADDED\"}",
   "Timestamp" : "2023-11-17T02:53:04.907Z",
   "UnsubscribeURL" : "https://sns.ap-northeast-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:ap-northeast-2:262981387273:DOJ-TestCase-Queueing.fifo:08fc981b-26eb-4fad-a258-0d0913d449a2"
 }
@@ -300,4 +380,4 @@ __DOJ-Judge-JudgeDone.fifo -> Problem__ : 채점 결과에 따라, 맞춘/틀린
 
 - 토픽 메세지 원본 예시
 
-TODO : 채점 서버측에서 어떻게 날릴 건지 리뷰해주셔야 합니다.
+TODO : README 업데이트 예정

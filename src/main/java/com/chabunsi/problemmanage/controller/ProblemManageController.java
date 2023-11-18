@@ -49,7 +49,6 @@ public class ProblemManageController {
     ) {
         Problem problem = problemService.addProblem(problemBody);
 
-
         return ResponseEntity.ok(problem);
     }
 

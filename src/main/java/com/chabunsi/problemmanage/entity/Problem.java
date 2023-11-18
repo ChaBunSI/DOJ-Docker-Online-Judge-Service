@@ -27,6 +27,12 @@ public class Problem {
     private String content;
 
     @Column
+    private String input_description;
+
+    @Column
+    private String output_description;
+
+    @Column
     private int solve_num;
 
     @Column

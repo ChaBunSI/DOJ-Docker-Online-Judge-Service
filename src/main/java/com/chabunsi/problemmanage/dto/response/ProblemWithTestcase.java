@@ -14,6 +14,8 @@ public class ProblemWithTestcase {
     private Long id;
     private String title;
     private String content;
+    private String input_description;
+    private String output_description;
     private int solve_num;
     private int wrong_num;
     private int memory_limited;   // MB
@@ -26,6 +28,8 @@ public class ProblemWithTestcase {
         this.id = problem.getId();
         this.title = problem.getTitle();
         this.content = problem.getContent();
+        this.input_description = problem.getInput_description();
+        this.output_description = problem.getOutput_description();
         this.solve_num = problem.getSolve_num();
         this.wrong_num = problem.getWrong_num();
         this.memory_limited = problem.getMemory_limited();

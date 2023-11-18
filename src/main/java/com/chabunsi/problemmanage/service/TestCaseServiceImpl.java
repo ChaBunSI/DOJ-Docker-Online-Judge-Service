@@ -44,6 +44,7 @@ public class TestCaseServiceImpl implements TestCaseService {
 
         if(!problem.getTestCaseList().isEmpty()) {
             Map<String, Object> map = new HashMap<>();
+            map.put("problemId", problem.getId());
             map.put("eventType", "TestCase_ADD");
             map.put("testCases", testCases.stream().map(tc -> TestCase.builder().id(tc.getId()).input(tc.getInput()).output(tc.getOutput()).build()).collect(Collectors.toList()));
             snsService.awsSnsPublish("TestCaseQueueing", "TestCaseEvent", map);
@@ -58,6 +59,7 @@ public class TestCaseServiceImpl implements TestCaseService {
         testCase.setOutput(testCaseBody.getOutput());
         testCase.setInput(testCaseBody.getInput());
         Map<String, Object> map = new HashMap<>();
+        map.put("problemId", testCase.getProblem().getId());
         map.put("eventType", "TestCase_UPDATE");
         map.put("testCases", TestCase.builder().id(testCase.getId()).input(testCase.getInput()).output(testCase.getOutput()).build());
         snsService.awsSnsPublish("TestCaseQueueing", "TestCaseEvent", map);
@@ -65,7 +67,14 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     @Override
     public void deleteTestCases(List<Long> testCaseIdList) {
-        testCaseRepository.deleteAllById(testCaseIdList);
+        TestCase testCase = testCaseRepository.getReferenceById(testCaseIdList.get(0));
 
+        Map<String, Object> map = new HashMap<>();
+        map.put("problemId", testCase.getProblem().getId());
+        map.put("eventType", "TestCase_DELETE");
+        map.put("testCases", testCaseIdList);
+
+        testCaseRepository.deleteAllById(testCaseIdList);
+        snsService.awsSnsPublish("TestCaseQueueing", "TestCaseEvent", map);
     }
 }

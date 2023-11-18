@@ -51,6 +51,7 @@ public class ProblemServiceImpl implements ProblemService {
         // 동기화
         if(!problem.getTestCaseList().isEmpty()) {
             Map<String, Object> map = new HashMap<>();
+            map.put("problemId", problem.getId());
             map.put("eventType", "TestCase_ADD");
             map.put("testCases", problem.getTestCaseList().stream().map(tc -> TestCase.builder().id(tc.getId()).input(tc.getInput()).output(tc.getOutput()).build()).collect(Collectors.toList()));
             snsService.awsSnsPublish("TestCaseQueueing", "TestCaseEvent", map);
@@ -71,6 +72,8 @@ public class ProblemServiceImpl implements ProblemService {
 
         problem.setTitle(problemBody.getTitle());
         problem.setContent(problemBody.getContent());
+        problem.setInput_description(problem.getInput_description());
+        problem.setOutput_description(problem.getOutput_description());
         problem.setMemory_limited(problemBody.getMemory_limited());
         problem.setTime_limited(problemBody.getTime_limited());
 
@@ -79,6 +82,8 @@ public class ProblemServiceImpl implements ProblemService {
     @Transactional
     @Override
     public void updateByResultSubmit(ResultSubmit submit) {
+        System.out.println(submit);
+
         Problem problem = problemRepository.getReferenceById(submit.getProblem_id());
 
         if(submit.getJudge_result() == JudgeResult.AC.getValue()) {
