@@ -2,8 +2,16 @@ import Link from "next/link";
 import styles from "../page.module.css";
 import pStyles from "../problem.module.css";
 import Image from "next/image";
+import { SubmitDataInterface, axiosGroup, getLanguage } from "@/global";
 
-export default function Submission() {
+export default async function Submission() {
+  const {
+    data: { data: submitDataList },
+  }: {
+    data: { data: SubmitDataInterface[] };
+  } = await axiosGroup.default.get(
+    "/submission_service/submissions?target=all"
+  );
   return (
     <main className={pStyles.main}>
       <div className={styles.description}>
@@ -22,19 +30,31 @@ export default function Submission() {
         <div className={pStyles.problem_wrapper}>
           <h1>Submissions</h1>
           <div className={pStyles.problem_list}>
-            {[1, 2, 3].map((i) => (
+            {submitDataList.map((item) => (
               <Link
-                href={"/submission/" + i}
-                key={i}
+                href={"/submission/" + item.id}
+                key={item.id}
                 className={pStyles.problem_block}
               >
-                <h2>Submission Id / Problem / UserID </h2>
-                <p>Submitted At: 2023/11/14 10:19</p>
-                <p>Code Info: Spanish (123 B)</p>
-                <p className={pStyles.ac}>
-                  Result: AC (Time: 255ms, Mem: 999TB)
+                <h2>
+                  Submission #{item.id} (Problem #{item.problem_id})
+                </h2>
+                <p>
+                  Submitted At: {new Date(item.created_time).toLocaleString()}
                 </p>
-                <p className={pStyles.wa}>Result: WA! Sanz</p>
+                <p>Program Language: {getLanguage(item.language_code)}</p>
+                <p
+                  className={
+                    item.judge_status === 0
+                      ? ""
+                      : item.judge_status === 1
+                      ? pStyles.ac
+                      : pStyles.wa
+                  }
+                >
+                  Result: {item.judge_description}{" "}
+                  {item.judge_status === 1 && `(Time: 255ms, Mem: 999TB)`}
+                </p>
               </Link>
             ))}
           </div>

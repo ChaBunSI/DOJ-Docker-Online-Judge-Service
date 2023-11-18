@@ -32,14 +32,19 @@ export default async function Submission({ params: { id } }: any) {
               &lt;-
             </Link>
             <h1>
-              Submission #{submitData.id} (Problem #{submitData.problem_id})
+              Submission #{submitData.id}&nbsp;
+              <Link href={`/problem/${submitData.problem_id}`}>
+                (Problem #{submitData.problem_id})
+              </Link>
             </h1>
             <div></div>
           </div>
           <div className={pStyles.problem_chunk}>
             <h2>Submit Code</h2>
             <textarea readOnly value={submitData.source}></textarea>
-            <p>Submitted At: {submitData.created_time}</p>
+            <p>
+              Submitted At: {new Date(submitData.created_time).toLocaleString()}
+            </p>
             <p>Program Language: {getLanguage(submitData.language_code)}</p>
             <p
               className={
