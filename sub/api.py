@@ -135,12 +135,10 @@ def submit_detail(request:WSGIRequest, id:int):
     is_success = False
     ret_data = {}
     
-    user_id = request.META.get(USER_ID, None)
     query_object = Q()
     
     if(id!=-1):
         query_object.add(Q(id=id), query_object.AND)
-        query_object.add(Q(user_id=user_id), query_object.AND)
         queryset = Submission.objects.filter(query_object)
         if queryset.exists():
             ret_data = SubmissionDetailSerializer(queryset.first()).data
