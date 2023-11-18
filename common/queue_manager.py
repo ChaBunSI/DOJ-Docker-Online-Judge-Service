@@ -57,19 +57,23 @@ def sqs_consume(queue_name:str):
                 message_item = None
             
             if message_item is not None:
-                # do Database Actions (in bulk)
-                submission_id = message_item.get("id")
-                judge_result = message_item.get("judge_result")
-                error_message = message_item.get("error_message")
-                
-                id_list.append(submission_id)
-                message_batch.append(
-                    {
-                        "id": submission_id,
-                        "judge_result": judge_result,
-                        "error_message": error_message,
-                    }
-                )
+                try:
+                    # do Database Actions (in bulk)
+                    submission_id = message_item.get("id")
+                    judge_result = message_item.get("judge_result")
+                    error_message = message_item.get("error_message")
+                    
+                    id_list.append(submission_id)
+                    message_batch.append(
+                        {
+                            "id": submission_id,
+                            "judge_result": judge_result,
+                            "error_message": error_message,
+                        }
+                    )
+                except Exception as e:
+                    print(e)
+                    
             
         if message_batch:
             print(f"Processing {len(message_batch)} Submissions..")
