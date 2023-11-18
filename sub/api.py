@@ -86,14 +86,17 @@ def submit(request:WSGIRequest, problem_id:int):
 def submission(request:WSGIRequest, problem_id:int=-1):
     # 특정 문제에 대한 사용자의 제출 이력을 확인
     user_id = request.META.get(USER_ID, None)
+    target = request.GET.get("target", "me")
     query_object = Q()
     is_success = False
     ret_data = {}
     
-    if(problem_id!=-1 and user_id is not None):
+    
+    if(user_id is not None and target=="me"):
         query_object.add(Q(user_id=user_id), query_object.AND)
+    
+    if(problem_id!=-1):
         query_object.add(Q(problem_id=problem_id), query_object.AND)
-        
         queryset = Submission.objects.filter(query_object)
         if(queryset.exists()):
             ret_data = SubmissionBasicSerializer(queryset, many=True).data
@@ -109,32 +112,19 @@ def submissions(request:WSGIRequest):
     # 이 유저 혹은 모든 유저의 모든 제출을 확인
     user_id = request.META.get(USER_ID, None)
     query_object = Q()
+    target = request.GET.get("target", "me")
     
     is_success = False
     ret_data = {}
     
-    if(user_id is not None):
-        is_success = True
+    if(user_id is not None and target=="me"):
         query_object.add(Q(user_id=user_id), query_object.AND)
-        queryset = Submission.objects.filter(query_object)
-        if(queryset.exists()):
-            ret_data = SubmissionBasicSerializer(queryset, many=True).data
-    
-    return message_response(ret_data, is_success)
-
-@csrf_exempt
-@require_http_methods(["GET"])
-def all_submissions(request:WSGIRequest):
-    is_success = False
-    ret_data = {}
-    
-    user_id = request.META.get(USER_ID, None)
-    if user_id is not None:    
-        queryset = Submission.objects.all()
-        if(queryset.exists()):
-            is_success = True
-            ret_data = SubmissionBasicSerializer(queryset, many=True).data
         
+    queryset = Submission.objects.filter(query_object)
+    if(queryset.exists()):
+        is_success = True
+        ret_data = SubmissionBasicSerializer(queryset, many=True).data
+    
     return message_response(ret_data, is_success)
 
 
@@ -148,7 +138,7 @@ def submit_detail(request:WSGIRequest, id:int):
     user_id = request.META.get(USER_ID, None)
     query_object = Q()
     
-    if(user_id is not None and id!=-1):
+    if(id!=-1):
         query_object.add(Q(id=id), query_object.AND)
         query_object.add(Q(user_id=user_id), query_object.AND)
         queryset = Submission.objects.filter(query_object)

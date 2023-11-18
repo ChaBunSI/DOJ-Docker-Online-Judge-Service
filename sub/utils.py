@@ -56,13 +56,13 @@ def process_submission(message_batch:List[Dict]):
         
     for msg_item in message_batch:
         submission_id = msg_item.get("id")
-        judge_status = msg_item.get("judge_result")
+        judge_result = msg_item.get("judge_result")
         error_message = msg_item.get("error_message")
-        if judge_status is not None:
-            judge_status = int(judge_status)
-            judge_descsription = JC_DICT.get(judge_status, "")
+        if judge_result is not None:
+            judge_result = int(judge_result)
+            judge_descsription = JC_DICT.get(judge_result, "")
             query_object.add(Q(id=submission_id), query_object.OR)
-            temp_dict[submission_id] = {"judge_status": judge_status, "error_message":error_message, "judge_description": judge_descsription}
+            temp_dict[submission_id] = {"judge_status": judge_result, "error_message":error_message, "judge_description": judge_descsription}
     
     if query_object:
         target_submissions = list(Submission.objects.filter(query_object))
