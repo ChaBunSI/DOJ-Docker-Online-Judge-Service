@@ -27,4 +27,4 @@ RUN pip3 install psycopg2-binary
 # RUN playwright install
 
 WORKDIR /var/www/submission
-COPY . /var/www/submission//
+COPY . /var/www/submission/

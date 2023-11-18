@@ -1,6 +1,18 @@
-version: "3.3"
+version: "3.9"
 services:
+  db_init:
+    image: postgres
+    volumes:
+      - "postgres_data:/data"
+    entrypoint:
+      - sh
+      - -c
+      - |
+        chown -R 2000:2000 /data
   db:
+    depends_on:
+      db_init:
+        condition: service_completed_successfully
     container_name: sub_db
     image: postgres
     restart: always
@@ -8,8 +20,10 @@ services:
       - POSTGRES_DB=ngds
       - POSTGRES_USER=ngds
       - POSTGRES_PASSWORD=ngds
+      - PGDATA=/pgdata
     volumes:
-      - ./psql_dir:/var/lib/postgresql/data
+      - postgres_data:/pgdata
+    user: "2000"
   submission:
     container_name: submission_service
     environment:
@@ -28,3 +42,6 @@ services:
     command: /bin/sh -c "cd /var/www/submission && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:80"
     env_file:
       - ./.env
+
+volumes:
+  postgres_data:

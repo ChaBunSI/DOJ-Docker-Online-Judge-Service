@@ -48,21 +48,28 @@ def sqs_consume(queue_name:str):
             )
             
             body_object = json.loads(message_body)
-            message_item:Dict = body_object.get("Message")
+            message_raw = body_object.get("Message")
+            message_item = None
+            try:
+                message_item:Dict = json.loads(message_raw)
+            except json.JSONDecodeError as e:
+                print(f"This is Message Is NOT Valid! -> {e}")
+                message_item = None
             
-            # do Database Actions (in bulk)
-            submission_id = message_item.get("id")
-            judge_result = message_item.get("judge_result")
-            error_message = message_item.get("error_message")
-            
-            id_list.append(submission_id)
-            message_batch.append(
-                {
-                    "id": submission_id,
-                    "judge_result": judge_result,
-                    "error_message": error_message,
-                }
-            )
+            if message_item is not None:
+                # do Database Actions (in bulk)
+                submission_id = message_item.get("id")
+                judge_result = message_item.get("judge_result")
+                error_message = message_item.get("error_message")
+                
+                id_list.append(submission_id)
+                message_batch.append(
+                    {
+                        "id": submission_id,
+                        "judge_result": judge_result,
+                        "error_message": error_message,
+                    }
+                )
             
         if message_batch:
             print(f"Processing {len(message_batch)} Submissions..")
