@@ -14,7 +14,7 @@ from django.utils import timezone
 
 # custom
 from sub.models import Submission
-from sub.parameters import JC_DICT
+from sub.parameters import JC_DICT, USER_ID
 
 def create_message(message:Dict, is_success:bool=True):
     ret_data = {}
@@ -22,9 +22,17 @@ def create_message(message:Dict, is_success:bool=True):
     ret_data["is_success"] = is_success
     return ret_data
 
-def message_response(message:Dict, is_success:bool=True):
+def is_authorized(request:WSGIRequest) -> bool:
+    user_id = request.META.get(USER_ID, None)
+    return user_id is not None
+
+def message_response(message:Dict, is_success:bool=True, is_authorized:bool=True):
     ret_data = create_message(message, is_success)
-    status_code = 200 if is_success else 400
+    status_code = 200
+    if not is_success:
+        status_code = 400
+    if not is_authorized:
+        status_code = 401
     return JsonResponse(ret_data, status=status_code)
 
 def parse_value_from_request_or_json(

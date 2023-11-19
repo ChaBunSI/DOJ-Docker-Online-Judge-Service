@@ -3,7 +3,7 @@ from django.urls import path
 # from django.urls import re_path
 
 # apis
-from sub.api import submission, submit, submit_detail, submissions
+from sub.api import submission, submit, submit_detail, submissions, user_submission_stats
 urlpatterns = [
     path(
         "submit/<int:problem_id>",
@@ -24,5 +24,10 @@ urlpatterns = [
         "submit_detail/<int:id>",
         submit_detail,
         name="submission detail for 1 submit",
+    ),
+    path(
+        "user-submission-stats",
+        user_submission_stats,
+        name="user_submission stats"
     ),
 ]

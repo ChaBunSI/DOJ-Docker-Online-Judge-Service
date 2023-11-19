@@ -15,14 +15,14 @@ from sub.models import Submission
 from sub.serializers import SubmissionBasicSerializer, SubmissionDetailSerializer
 
 # utils
-from sub.utils import message_response, parse_value_from_request_or_json
+from sub.utils import message_response, parse_value_from_request_or_json, is_authorized
 
 # common
 from common.topic_manager import publish_message
 from common.eureka_manager import ask_problem_to_pm
 
 # literals
-from sub.parameters import SOURCE, LANGUAGE, LANGUAGE_DEFAULT, LANGUAGE_C, LANGUAGE_JAVA, LANGUAGE_PYTHON, SOURCE_DEFAULT, USER_ID, ACCESS_TOKEN, LANGUAGE_CPP, JC_NJ, JC_NJ_DESC
+from sub.parameters import SOURCE, LANGUAGE, LANGUAGE_DEFAULT, LANGUAGE_C, LANGUAGE_JAVA, LANGUAGE_PYTHON, SOURCE_DEFAULT, USER_ID, ACCESS_TOKEN, LANGUAGE_CPP, JC_NJ, JC_NJ_DESC, JC_AC
 from settings.literals import AWS_SNS_TOPIC_SUBMIT
 
 # GET
@@ -78,7 +78,7 @@ def submit(request:WSGIRequest, problem_id:int):
         publish_message(AWS_SNS_TOPIC_SUBMIT, queue_data)
     
     
-    return message_response(ret_data, is_success)
+    return message_response(ret_data, is_success, is_authorized(request))
     
 
 @csrf_exempt
@@ -90,7 +90,6 @@ def submission(request:WSGIRequest, problem_id:int=-1):
     query_object = Q()
     is_success = False
     ret_data = {}
-    
     
     if(user_id is not None and target=="me"):
         query_object.add(Q(user_id=user_id), query_object.AND)
@@ -127,6 +126,46 @@ def submissions(request:WSGIRequest):
     
     return message_response(ret_data, is_success)
 
+@csrf_exempt
+@require_http_methods(["GET"])
+def user_submission_stats(request:WSGIRequest):
+    # 이 유저의 제출에 의한 문제
+    user_id = request.META.get(USER_ID, None)
+    query_object = Q()
+    
+    is_success = False
+    ret_data = {}
+    if(user_id is not None):
+        query_object.add(Q(user_id=user_id), query_object.AND)
+        query_object.add(~Q(judge_status=JC_NJ), query_object.AND)
+        queryset = Submission.objects.filter(query_object)
+        
+        
+        success_queryset = queryset.filter(judge_status=JC_AC)
+        fail_queryset = queryset.exclude(judge_status=JC_AC)
+        
+        total_count = len(queryset)
+        success_count = len(success_queryset)
+        
+        success_problems = list(success_queryset.distinct("problem_id"))
+        fail_problems = list(fail_queryset.distinct("problem_id"))
+        
+        success_problems = [item.problem_id for item in success_problems]
+        fail_problems = [item.problem_id for item in fail_problems]
+        fail_problems = list(filter(lambda x: x not in success_problems, fail_problems))
+        fail_count = len(fail_problems)
+        
+        ret_data["total_count"] = total_count
+        ret_data["success_count"] = success_count
+        ret_data["fail_count"] = fail_count
+        
+        ret_data["success_problems"] = success_problems
+        ret_data["fail_problems"] = fail_problems
+        is_success = True    
+
+    return message_response(ret_data , is_success, is_authorized(request))
+    
+        
 
 @csrf_exempt
 @require_http_methods(["GET"])
