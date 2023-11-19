@@ -313,3 +313,13 @@
   background-color: #ff4f4f;
   transition: 0.3s all;
 }
+
+.loading{
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.7);
+  top: 10;
+}

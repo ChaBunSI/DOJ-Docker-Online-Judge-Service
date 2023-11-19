@@ -3,7 +3,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { useEffect } from "react";
-import { BASE_URL, LOCAL_STORAGE_JWT_KEY, axiosGroup } from "@/global";
+import { BASE_URL, LOCAL_STORAGE_JWT_KEY, fetchGroup } from "@/global";
 import axios from "axios";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -16,7 +16,7 @@ export default function RootLayout({
   useEffect(() => {
     const jwt = localStorage.getItem(LOCAL_STORAGE_JWT_KEY);
     if (jwt) {
-      axiosGroup.api = axios.create({
+      fetchGroup.api = axios.create({
         baseURL: BASE_URL,
         headers: {
           Authorization: "Bearer " + jwt,

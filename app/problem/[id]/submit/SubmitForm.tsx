@@ -4,7 +4,7 @@ import Link from "next/link";
 import pStyles from "../../../problem.module.css";
 import { ChangeEvent, useState } from "react";
 import { useTextArea } from "@/hook/useTextArea";
-import { ProblemDataInterface, axiosGroup } from "@/global";
+import { ProblemDataInterface, fetchGroup } from "@/global";
 import { useRouter } from "next/navigation";
 
 export default function SubmitForm({
@@ -85,7 +85,7 @@ export default function SubmitForm({
           className={pStyles.submit_button}
           onClick={async () => {
             try {
-              const { data } = await axiosGroup.api.post(
+              const { data } = await fetchGroup.api.post(
                 "/submission_service/submit/" + problemData.id,
                 {
                   language,

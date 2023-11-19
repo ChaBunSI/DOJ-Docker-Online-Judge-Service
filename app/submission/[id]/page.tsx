@@ -2,14 +2,16 @@ import Link from "next/link";
 import styles from "../../page.module.css";
 import pStyles from "../../problem.module.css";
 import Image from "next/image";
-import { SubmitDataInterface, axiosGroup, getLanguage } from "@/global";
+import { BASE_URL, SubmitDataInterface, getLanguage } from "@/global";
 
 export default async function Submission({ params: { id } }: any) {
-  const {
-    data: { data: submitData },
-  }: {
-    data: { data: SubmitDataInterface };
-  } = await axiosGroup.default.get("/submission_service/submit_detail/" + id);
+  const { data: submitData }: { data: SubmitDataInterface } = await (
+    await fetch(`${BASE_URL}/submission_service/submit_detail/${id}`, {
+      cache: "no-cache",
+    })
+  ).json();
+
+  console.log(submitData);
 
   return (
     <main className={pStyles.main}>

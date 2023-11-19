@@ -4,10 +4,7 @@ export const LOCAL_STORAGE_JWT_KEY = "aksdjflaksdfj;lfsd";
 
 export const BASE_URL = "https://api.goodpose.shop";
 
-export const axiosGroup = {
-  default: axios.create({
-    baseURL: BASE_URL,
-  }),
+export const fetchGroup = {
   api: axios.create({
     baseURL: BASE_URL,
   }),

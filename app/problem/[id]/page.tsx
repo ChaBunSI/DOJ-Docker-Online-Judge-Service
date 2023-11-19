@@ -2,14 +2,14 @@ import Link from "next/link";
 import styles from "../../page.module.css";
 import pStyles from "../../problem.module.css";
 import Image from "next/image";
-import { ProblemDataInterface, axiosGroup } from "@/global";
+import { BASE_URL, ProblemDataInterface, fetchGroup } from "@/global";
 
 export default async function Problem({ params: { id } }: any) {
-  const {
-    data: problemData,
-  }: {
-    data: ProblemDataInterface;
-  } = await axiosGroup.default.get("/problem_service/problem/" + id);
+  const problemData: ProblemDataInterface = await (
+    await fetch(`${BASE_URL}/problem_service/problem/${id}`, {
+      cache: "no-cache",
+    })
+  ).json();
 
   return (
     <main className={pStyles.main}>

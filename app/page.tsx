@@ -53,31 +53,19 @@ export default function Home() {
           <p>You can find all user&#39;s submissions.</p>
         </Link>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <Link href={"/addProblem"} className={styles.card}>
           <h2>
-            Templates <span>-&gt;</span>
+            Add Problem <span>-&gt;</span>
           </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
+          <p>Make your own problem and upload to us.</p>
+        </Link>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <Link href={"/userInfo"} className={styles.card}>
           <h2>
-            Deploy <span>-&gt;</span>
+            User Info <span>-&gt;</span>
           </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+          <p>Check your submission data and solved/unsolved problems.</p>
+        </Link>
       </div>
     </main>
   );
