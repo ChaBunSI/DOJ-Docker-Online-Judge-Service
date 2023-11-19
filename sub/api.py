@@ -128,15 +128,12 @@ def submissions(request:WSGIRequest):
 
 @csrf_exempt
 @require_http_methods(["GET"])
-def user_submission_stats(request:WSGIRequest):
+def user_submission_stats(request:WSGIRequest, user_id:int=-1):
     # 이 유저의 제출에 의한 문제
-    user_id = request.META.get(USER_ID, None)
     query_object = Q()
-    
     is_success = False
     ret_data = {}
-    if(user_id is not None):
-        query_object.add(Q(user_id=user_id), query_object.AND)
+    if(user_id !=-1):
         query_object.add(~Q(judge_status=JC_NJ), query_object.AND)
         queryset = Submission.objects.filter(query_object)
         
@@ -163,7 +160,7 @@ def user_submission_stats(request:WSGIRequest):
         ret_data["fail_problems"] = fail_problems
         is_success = True    
 
-    return message_response(ret_data , is_success, is_authorized(request))
+    return message_response(ret_data , is_success)
     
         
 
