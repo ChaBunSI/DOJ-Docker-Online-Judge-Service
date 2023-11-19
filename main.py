@@ -2,14 +2,14 @@ from datetime import datetime, timedelta
 
 import py_eureka_client.eureka_client as eureka_client
 import py_eureka_client.logger as eureka_logger
-from contextlib import asynccontextmanager
-from typing import Union
 from fastapi import Depends, FastAPI, Request, Response
 from passlib.context import CryptContext
+from fastapi.encoders import jsonable_encoder
 from jose import JWTError, jwt
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
-from crud import create_member, get_member_by_email, get_member_by_email_and_name
+from crud import create_member, get_member_by_email, get_member_by_email_and_name, get_member_without_pw
 
 from db import Base, SessionLocal, engine
 from schemas import Member, MemberCreate
@@ -31,20 +31,6 @@ ALGORITHM = "HS256"
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 app = FastAPI()
-
-
-# def lifespan():
-#     eureka_client.init(
-#         eureka_server="http://34.64.213.211:8761/eureka",
-#         app_name="AUTH-SERVICE",
-#         instance_host="10.178.0.3",
-#         instance_port=81
-#     )
-#     print("Registering...")
-#     eureka_logger.set_level("INFO")
-#     yield
-#     eureka_client.stop()
-
 
 @app.on_event("startup")
 async def startup_event():
@@ -122,3 +108,13 @@ async def post_create_member(user: MemberCreate, db: Session = Depends(get_db)):
 
     else:
         return Response(status_code=200, content="Member created successfully")
+
+
+@app.get("/user/{id}")
+async def get_user(id: int, db: Session = Depends(get_db)):
+    db_member = get_member_without_pw(db, member_id=id)
+
+    if not db_member:
+        return Response(status_code=400, content="User not found")
+    else:
+        return JSONResponse(status_code=200, content=jsonable_encoder(db_member))

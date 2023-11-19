@@ -11,8 +11,14 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 
-def get_member(db: Session, member_id: int):
-    return db.query(Member).filter(Member.id == member_id).first()
+def get_member_without_pw(db: Session, member_id: int):
+    member = db.query(Member).filter(Member.id == member_id).first()
+
+    if not member:
+        return None
+    else:
+        delattr(member, 'password')
+        return member
 
 
 def get_member_by_email(db: Session, email: str):
