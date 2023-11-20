@@ -3,6 +3,7 @@ import styles from "../page.module.css";
 import pStyles from "../problem.module.css";
 import Image from "next/image";
 import { BASE_URL, ProblemListItemDataInterface } from "@/global";
+import LatexRenderer from "../LatexRenderer";
 
 export default async function Problems() {
   const problemData: ProblemListItemDataInterface[] = await (
@@ -42,7 +43,9 @@ export default async function Problems() {
                   {`p.show{white-space: nowrap; overflow: hidden;
                   text-overflow: ellipsis;}`}
                 </style>
-                <p className="show">{item.content}</p>
+                <p className="show">
+                  <LatexRenderer>{item.content}</LatexRenderer>
+                </p>
               </Link>
             ))}
           </div>
