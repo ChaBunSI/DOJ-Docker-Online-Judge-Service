@@ -38,7 +38,11 @@ export default async function Problems() {
                 <h2>
                   {item.title} #{item.id}
                 </h2>
-                <p>Problem Description</p>
+                <style>
+                  {`p.show{white-space: nowrap; overflow: hidden;
+                  text-overflow: ellipsis;}`}
+                </style>
+                <p className="show">{item.content}</p>
               </Link>
             ))}
           </div>

@@ -2,7 +2,8 @@ import Link from "next/link";
 import styles from "../../page.module.css";
 import pStyles from "../../problem.module.css";
 import Image from "next/image";
-import { BASE_URL, ProblemDataInterface, fetchGroup } from "@/global";
+import { BASE_URL, ProblemDataInterface } from "@/global";
+import LatexRenderer from "@/app/LatexRenderer";
 
 export default async function Problem({ params: { id } }: any) {
   const problemData: ProblemDataInterface = await (
@@ -38,37 +39,37 @@ export default async function Problem({ params: { id } }: any) {
           </div>
           <div className={pStyles.problem_chunk}>
             <h2>Description</h2>
-            <p>{problemData.content}</p>
+            <p>
+              <LatexRenderer>{problemData.content}</LatexRenderer>
+            </p>
           </div>
           <div className={pStyles.problem_chunk}>
             <h2>Limitation</h2>
             <p>
-              시간 제한: {problemData.time_limited}초, 메모리 제한:{" "}
+              시간 제한: {problemData.time_limited}ms, 메모리 제한:{" "}
               {problemData.memory_limited}MB
             </p>
           </div>
           <div className={pStyles.problem_chunk}>
             <h2>Input</h2>
-            <p>첫째 줄에 A와 B가 주어진다.</p>
+            <p>
+              <LatexRenderer>{problemData.input_description}</LatexRenderer>
+            </p>
           </div>
           <div className={pStyles.problem_chunk}>
             <h2>Output</h2>
-            <p>첫째 줄에 A+B를 출력한다.</p>
+            <p>
+              <LatexRenderer>{problemData.output_description}</LatexRenderer>
+            </p>
           </div>
           <div className={pStyles.problem_ioblock}>
             <div className={pStyles.problem_chunk}>
               <h2>Input Example</h2>
-              <textarea
-                readOnly
-                value={problemData.testCaseList[0].input}
-              ></textarea>
+              <textarea readOnly value={problemData.testCaseList[0].input} />
             </div>
             <div className={pStyles.problem_chunk}>
               <h2>Output</h2>
-              <textarea
-                readOnly
-                value={problemData.testCaseList[0].output}
-              ></textarea>
+              <textarea readOnly value={problemData.testCaseList[0].output} />
             </div>
           </div>
         </div>

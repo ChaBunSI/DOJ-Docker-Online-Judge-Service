@@ -15,6 +15,7 @@ export interface ProblemListItemDataInterface {
   title: string;
   solve_num: number;
   wrong_num: number;
+  content: string;
 }
 
 export interface ProblemDataInterface {
@@ -25,6 +26,8 @@ export interface ProblemDataInterface {
   wrong_num: number;
   memory_limited: number;
   time_limited: number;
+  input_description: string;
+  output_description: string;
   testCaseList: {
     id: number;
     input: string;
