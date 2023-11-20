@@ -42,7 +42,7 @@ JC_RE_DESC = "Runtime Error"
 JC_TLE_DESC = "Time Limit Exceeded"
 JC_MLE_DESC = "Memory Limit Exceeded"
 JC_OLE_DESC = "Output Limit Exceeded"
-JC_SE_DESC = "Sandbox Limit Exceeded"
+JC_SE_DESC = "Sandbox Error"
 
 
 JC_DICT = {
