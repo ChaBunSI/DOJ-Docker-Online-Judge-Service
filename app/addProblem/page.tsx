@@ -2,7 +2,7 @@ import Link from "next/link";
 import styles from "../page.module.css";
 import pStyles from "../problem.module.css";
 import Image from "next/image";
-import { SubmitDataInterface, getLanguage } from "@/global";
+import AddProblemForm from "./AddProblemForm";
 
 export default async function AddProblem() {
   return (
@@ -20,10 +20,7 @@ export default async function AddProblem() {
         </Link>
       </div>
       <div className={styles.center}>
-        <div className={pStyles.problem_wrapper}>
-          <h1>Submissions</h1>
-          <div className={pStyles.problem_list}></div>
-        </div>
+        <AddProblemForm />
       </div>
       <div></div>
     </main>

@@ -11,8 +11,6 @@ export default async function Submission({ params: { id } }: any) {
     })
   ).json();
 
-  console.log(submitData);
-
   return (
     <main className={pStyles.main}>
       <div className={styles.description}>
