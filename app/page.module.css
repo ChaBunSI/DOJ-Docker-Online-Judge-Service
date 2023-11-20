@@ -238,6 +238,15 @@
     filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);
   }
 }
+@media (prefers-color-scheme: light) {
+  .vercelLogo {
+    filter: invert(1);
+  }
+
+  .logo {
+    filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);
+  }
+}
 
 @keyframes rotate {
   from {
@@ -306,11 +315,11 @@
   border: transparent;
   padding: 0 5px;
   cursor: pointer;
-  background-color: #ff6262;
+  background-color: #9d0000;
 }
 
 .description_auth button:hover{
-  background-color: #ff4f4f;
+  background-color: #c05f5f;
   transition: 0.3s all;
 }
 

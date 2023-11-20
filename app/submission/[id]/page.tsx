@@ -2,7 +2,9 @@ import Link from "next/link";
 import styles from "../../page.module.css";
 import pStyles from "../../problem.module.css";
 import Image from "next/image";
+import { Editor } from "@monaco-editor/react";
 import { BASE_URL, SubmitDataInterface, getLanguage } from "@/global";
+import ViewEditor from "./ViewEditor";
 
 export default async function Submission({ params: { id } }: any) {
   const { data: submitData }: { data: SubmitDataInterface } = await (
@@ -41,7 +43,7 @@ export default async function Submission({ params: { id } }: any) {
           </div>
           <div className={pStyles.problem_chunk}>
             <h2>Submit Code</h2>
-            <textarea readOnly value={submitData.source}></textarea>
+            <ViewEditor submitData={submitData} />
             <p>
               Submitted At: {new Date(submitData.created_time).toLocaleString()}
             </p>

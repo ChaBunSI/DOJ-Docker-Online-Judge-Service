@@ -6,6 +6,7 @@ import { ChangeEvent, useState } from "react";
 import { useTextArea } from "@/hook/useTextArea";
 import { ProblemDataInterface, fetchGroup } from "@/global";
 import { useRouter } from "next/navigation";
+import { Editor } from "@monaco-editor/react";
 
 export default function SubmitForm({
   problemData,
@@ -13,7 +14,7 @@ export default function SubmitForm({
   problemData: ProblemDataInterface;
 }) {
   const router = useRouter();
-  const [code, onCodeChange] = useTextArea("");
+  const [code, setCode] = useState("");
   const [language, setLanguage] = useState(0);
   const onLanguageChange = (e: ChangeEvent<HTMLInputElement>) => {
     setLanguage(Number(e.target.value));
@@ -32,23 +33,31 @@ export default function SubmitForm({
       </div>
       <div className={pStyles.problem_chunk}>
         <h2>Submit Code</h2>
-        <textarea
-          placeholder="Write Down Your Code"
-          onKeyDown={(e) => {
-            if (e.key.toLowerCase() === "tab") {
-              e.preventDefault();
-              const start = e.currentTarget.selectionStart;
-              const end = e.currentTarget.selectionEnd;
-              e.currentTarget.value =
-                e.currentTarget.value.substring(0, start) +
-                "\t" +
-                e.currentTarget.value.substring(end);
-              e.currentTarget.selectionStart = e.currentTarget.selectionEnd =
-                start + 1;
-            }
+        <Editor
+          height="250px"
+          theme="vs-dark"
+          language={
+            language === 0
+              ? "cpp"
+              : language === 1
+              ? "cpp"
+              : language === 2
+              ? "java"
+              : "python"
+          }
+          onChange={(value) => {
+            setCode(value || "");
           }}
-          onChange={onCodeChange}
-        ></textarea>
+          value={code}
+          options={
+            {
+              // readOnly: true,
+              // minimap: {
+              //   enabled: false,
+              // },
+            }
+          }
+        />
       </div>
       <div className={pStyles.problem_chunk}>
         <h2>Language</h2>
