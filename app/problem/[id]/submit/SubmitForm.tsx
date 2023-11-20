@@ -78,7 +78,7 @@ export default function SubmitForm({
             id="c"
             readOnly
           />
-          <label htmlFor="c">C</label>
+          <label htmlFor="c">C11</label>
           <input
             type="radio"
             name="language"
@@ -88,7 +88,7 @@ export default function SubmitForm({
             id="cpp"
             readOnly
           />
-          <label htmlFor="cpp">C++</label>
+          <label htmlFor="cpp">C++20</label>
           <input
             type="radio"
             name="language"
@@ -98,7 +98,7 @@ export default function SubmitForm({
             id="java"
             readOnly
           />
-          <label htmlFor="java">Java</label>
+          <label htmlFor="java">Java 17</label>
           <input
             type="radio"
             name="language"
@@ -108,7 +108,7 @@ export default function SubmitForm({
             id="python"
             readOnly
           />
-          <label htmlFor="python">Python</label>
+          <label htmlFor="python">Python 3.10.9</label>
         </div>
         <button
           className={pStyles.submit_button}
