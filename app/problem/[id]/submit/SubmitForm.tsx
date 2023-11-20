@@ -34,6 +34,19 @@ export default function SubmitForm({
         <h2>Submit Code</h2>
         <textarea
           placeholder="Write Down Your Code"
+          onKeyDown={(e) => {
+            if (e.key.toLowerCase() === "tab") {
+              e.preventDefault();
+              const start = e.currentTarget.selectionStart;
+              const end = e.currentTarget.selectionEnd;
+              e.currentTarget.value =
+                e.currentTarget.value.substring(0, start) +
+                "\t" +
+                e.currentTarget.value.substring(end);
+              e.currentTarget.selectionStart = e.currentTarget.selectionEnd =
+                start + 1;
+            }
+          }}
           onChange={onCodeChange}
         ></textarea>
       </div>

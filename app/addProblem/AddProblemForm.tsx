@@ -1,10 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import pStyles from "../problem.module.css";
-import { ChangeEvent, useState } from "react";
 import { useTextArea } from "@/hook/useTextArea";
-import { ProblemDataInterface, fetchGroup } from "@/global";
+import { fetchGroup } from "@/global";
 import { useRouter } from "next/navigation";
 import { useInput } from "@/hook/useInput";
 
