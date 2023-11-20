@@ -5,7 +5,7 @@ import styles from "../page.module.css";
 import Image from "next/image";
 import axios from "axios";
 import { useInput } from "@/hook/useInput";
-import { LOCAL_STORAGE_JWT_KEY } from "@/global";
+import { BASE_URL, LOCAL_STORAGE_JWT_KEY, fetchGroup } from "@/global";
 import { useRouter } from "next/navigation";
 
 export default function SignIn() {
@@ -68,10 +68,14 @@ export default function SignIn() {
                     }
                   );
 
-                  window.localStorage.setItem(
-                    LOCAL_STORAGE_JWT_KEY,
-                    data.accessToken
-                  );
+                  localStorage.setItem(LOCAL_STORAGE_JWT_KEY, data.accessToken);
+
+                  fetchGroup.api = fetchGroup.api = axios.create({
+                    baseURL: BASE_URL,
+                    headers: {
+                      Authorization: "Bearer " + data.accessToken,
+                    },
+                  });
 
                   alert("로그인 성공");
                   router.push("/");
