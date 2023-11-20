@@ -126,3 +126,18 @@
   font-weight: 600;
   margin-bottom: 1rem;
 }
+
+.submit_language_list {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+}
+
+.submit_language_list input[type="radio"] {
+  cursor: pointer;
+}
+
+.submit_language_list label {
+  padding: 0 1rem;
+  cursor: pointer;
+}

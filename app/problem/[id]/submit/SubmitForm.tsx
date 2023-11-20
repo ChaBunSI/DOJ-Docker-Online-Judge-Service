@@ -3,17 +3,9 @@
 import Link from "next/link";
 import pStyles from "../../../problem.module.css";
 import { ChangeEvent, useState } from "react";
-import { useTextArea } from "@/hook/useTextArea";
-import { ProblemDataInterface, fetchGroup } from "@/global";
+import { INIT_CODE_LIST, ProblemDataInterface, fetchGroup } from "@/global";
 import { useRouter } from "next/navigation";
 import { Editor } from "@monaco-editor/react";
-
-const INIT_CODE = `#include<stdio.h>
-
-int main(void){
-    printf("Hello DOJ!\\n");
-    return 0;
-}`;
 
 export default function SubmitForm({
   problemData,
@@ -21,10 +13,12 @@ export default function SubmitForm({
   problemData: ProblemDataInterface;
 }) {
   const router = useRouter();
-  const [code, setCode] = useState(INIT_CODE);
   const [language, setLanguage] = useState(0);
+  const [code, setCode] = useState(INIT_CODE_LIST[language]);
   const onLanguageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setLanguage(Number(e.target.value));
+    const langNum = Number(e.target.value);
+    setCode(INIT_CODE_LIST[langNum]);
+    setLanguage(langNum);
   };
 
   return (
@@ -68,7 +62,7 @@ export default function SubmitForm({
       </div>
       <div className={pStyles.problem_chunk}>
         <h2>Language</h2>
-        <div className={pStyles.problem_ioblock}>
+        <div className={pStyles.submit_language_list}>
           <input
             type="radio"
             name="language"

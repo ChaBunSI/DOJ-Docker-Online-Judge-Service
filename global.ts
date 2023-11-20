@@ -90,3 +90,33 @@ export const getSubmitResult = (status: number) => {
       return "Unknown Error";
   }
 };
+
+const INIT_CODE_C = `#include<stdio.h>
+
+int main(void){
+  printf("Hello DOJ!\\n");
+  return 0;
+}`;
+
+const INIT_CODE_CPP = `#include<iostream>
+using namespace std;
+
+int main(void){
+  cout << "Hello DOJ!" << endl;
+    return 0;
+  }`;
+
+const INIT_CODE_JAVA = `public class Main {
+    public static void main(String[] args) {
+      System.out.println("Hello DOJ!");
+    }
+  }`;
+
+const INIT_CODE_PYTHON = `print("Hello DOJ!")`;
+
+export const INIT_CODE_LIST = [
+  INIT_CODE_C,
+  INIT_CODE_CPP,
+  INIT_CODE_JAVA,
+  INIT_CODE_PYTHON,
+];
