@@ -103,14 +103,14 @@ using namespace std;
 
 int main(void){
   cout << "Hello DOJ!" << endl;
-    return 0;
-  }`;
+  return 0;
+}`;
 
 const INIT_CODE_JAVA = `public class Main {
-    public static void main(String[] args) {
-      System.out.println("Hello DOJ!");
-    }
-  }`;
+  public static void main(String[] args) {
+    System.out.println("Hello DOJ!");
+  }
+}`;
 
 const INIT_CODE_PYTHON = `print("Hello DOJ!")`;
 
