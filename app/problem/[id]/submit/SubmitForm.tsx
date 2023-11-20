@@ -8,13 +8,20 @@ import { ProblemDataInterface, fetchGroup } from "@/global";
 import { useRouter } from "next/navigation";
 import { Editor } from "@monaco-editor/react";
 
+const INIT_CODE = `#include<stdio.h>
+
+int main(void){
+    printf("Hello DOJ!\\n");
+    return 0;
+}`;
+
 export default function SubmitForm({
   problemData,
 }: {
   problemData: ProblemDataInterface;
 }) {
   const router = useRouter();
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState(INIT_CODE);
   const [language, setLanguage] = useState(0);
   const onLanguageChange = (e: ChangeEvent<HTMLInputElement>) => {
     setLanguage(Number(e.target.value));
