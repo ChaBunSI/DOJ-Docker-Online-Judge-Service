@@ -68,7 +68,7 @@ def submit(request:WSGIRequest, problem_id:int):
         ret_data = SubmissionBasicSerializer(sub_object).data
         queue_data = SubmissionDetailSerializer(sub_object).data
         queue_data["memory_limited"] = limit_dict.get("memory_limited", 100)
-        queue_data["time_limited"] = limit_dict.get("time_limited", 100)
+        queue_data["time_limited"] = limit_dict.get("time_limited", 2000)
         is_success = True
         
         
