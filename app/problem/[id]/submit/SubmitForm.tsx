@@ -56,6 +56,7 @@ export default function SubmitForm({
               // minimap: {
               //   enabled: false,
               // },
+              // autoIndent: true,
             }
           }
         />
