@@ -50,15 +50,14 @@ export default function SubmitForm({
             setCode(value || "");
           }}
           value={code}
-          options={{
-            // readOnly: true,
-            // minimap: {
-            //   enabled: false,
-            // },
-            // autoIndent: true,
-            formatOnType: true,
-            formatOnPaste: true,
-          }}
+          options={
+            {
+              // readOnly: true,
+              // minimap: {
+              //   enabled: false,
+              // },
+            }
+          }
         />
       </div>
       <div className={pStyles.problem_chunk}>
