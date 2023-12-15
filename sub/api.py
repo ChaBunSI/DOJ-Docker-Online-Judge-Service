@@ -79,7 +79,7 @@ def submission(request:WSGIRequest, problem_id:int=-1):
     
     if(problem_id!=-1):
         query_object.add(Q(problem_id=problem_id), query_object.AND)
-        queryset = Submission.objects.filter(query_object)
+        queryset = Submission.objects.filter(query_object).order_by("-id")
         if(queryset.exists()):
             ret_data = SubmissionBasicSerializer(queryset, many=True).data
             is_success = True
@@ -102,21 +102,14 @@ def submissions(request:WSGIRequest):
         query_object = Q()
         query_object.add(Q(user_id=user_id), query_object.AND)
         queryset = Submission.objects.filter(query_object)
-        print(f"[1] {queryset.query}")
         ret_data = SubmissionBasicSerializer(queryset, many=True).data
         is_success = True
         
     else:
-        queryset = Submission.objects.all()
-        origin_length = len(queryset)
-        print(f"[2] {queryset.query}")
+        queryset = Submission.objects.all().order_by("-id")
         is_success = True
         ret_data = SubmissionBasicSerializer(queryset, many=True).data
-        after_length = len(ret_data)
-        print(queryset)
-        print(f"from: {origin_length} | to: {after_length}")
-        print(ret_data)
-    
+            
     return message_response(ret_data, is_success)
 
 @csrf_exempt
