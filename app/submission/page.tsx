@@ -47,7 +47,7 @@ export default function Submission() {
 
           const index = newSubmitData.findIndex((item) => item.id === data.id);
 
-          if (data.time_used && data.memory_used) {
+          if (data.memory_used) {
             newSubmitData[index].time_used = data.time_used;
             newSubmitData[index].memory_used = data.memory_used;
             newSubmitData[index].tc_cur = 0;
