@@ -93,17 +93,19 @@ def submission(request:WSGIRequest, problem_id:int=-1):
 def submissions(request:WSGIRequest): 
     # 이 유저 혹은 모든 유저의 모든 제출을 확인
     user_id = request.META.get(USER_ID, None)
-    query_object = Q()
     target = request.GET.get("target", "me")
     
     is_success = False
     ret_data = {}
     
     if(user_id is not None and target=="me"):
+        query_object = Q()
         query_object.add(Q(user_id=user_id), query_object.AND)
+        queryset = Submission.objects.filter(query_object)
+        ret_data = SubmissionBasicSerializer(queryset, many=True).data
         
-    queryset = Submission.objects.filter(query_object)
-    if(queryset.exists()):
+    else:
+        queryset = Submission.objects.all()
         is_success = True
         ret_data = SubmissionBasicSerializer(queryset, many=True).data
     
