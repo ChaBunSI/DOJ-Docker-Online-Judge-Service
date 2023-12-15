@@ -16,7 +16,7 @@ new Eureka({
     hostName: "10.178.0.3",
     ipAddr: "10.178.0.3",
     port: PORT,
-    vipAddress: "jq.test.something.com",
+    vipAddress: "10.178.0.3",
     dataCenterInfo: {
       name: "MyOwn",
     },
