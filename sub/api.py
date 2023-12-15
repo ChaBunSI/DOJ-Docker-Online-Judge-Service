@@ -15,15 +15,12 @@ from sub.models import Submission
 from sub.serializers import SubmissionBasicSerializer, SubmissionDetailSerializer
 
 # utils
-from sub.utils import message_response, parse_value_from_request_or_json, is_authorized, generate_task
+from sub.utils import message_response, parse_value_from_request_or_json, is_authorized, generate_task, get_limitations
 
 # common
-from common.topic_manager import publish_message
-from common.eureka_manager import ask_problem_to_pm
 
 # literals
 from sub.parameters import SOURCE, LANGUAGE, LANGUAGE_DEFAULT, LANGUAGE_C, LANGUAGE_JAVA, LANGUAGE_PYTHON, SOURCE_DEFAULT, USER_ID, ACCESS_TOKEN, LANGUAGE_CPP, JC_NJ, JC_NJ_DESC, JC_AC, TIME_LIMITED, MEM_LIMITED
-from settings.literals import AWS_SNS_TOPIC_SUBMIT
 
 @csrf_exempt
 @require_http_methods(["POST"])
@@ -45,7 +42,6 @@ def submit(request:WSGIRequest, problem_id:int):
         ret_data = {}
     else:
         # get value from them.
-        limit_dict = ask_problem_to_pm(problem_id, {}, access_token)
         sub_object = Submission.objects.create(
             problem_id = problem_id,
             user_id = user_id,
@@ -58,14 +54,11 @@ def submit(request:WSGIRequest, problem_id:int):
         queue_data = SubmissionDetailSerializer(sub_object).data
         
         # ask to problem_manage server
+        limit_dict = get_limitations(problem_id, access_token)
         queue_data[MEM_LIMITED] = limit_dict.get(MEM_LIMITED, 100)
         queue_data[TIME_LIMITED] = limit_dict.get(TIME_LIMITED, 2000)
         is_success = True
-        
         generate_task(queue_data)
-        
-        # 메시지 큐에 보내주도록 하자구
-        # publish_message(AWS_SNS_TOPIC_SUBMIT, queue_data)
     
     
     return message_response(ret_data, is_success, is_authorized(request))

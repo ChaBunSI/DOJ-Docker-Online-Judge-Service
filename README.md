@@ -180,7 +180,7 @@ POST /submit/1
 
 ```
 
-## 구현 진행 상황
+## 구현 진행 상황 (Midterm)
 - SQS Subscribe -> Daemon Thread 서버 기동시에 실행
 - SNS Publish -> 일회성으로 연결 생성 후 종료시킴
 - Eureka HeartBeat -> 서버 기동시에 실행
@@ -188,6 +188,11 @@ POST /submit/1
 - 코드 제출한 내용을 SNS Topic 으로 발행
 - 문제 관리 서비스에 제한 정보 물어보는 로직 추가(eureka 사용)
 - 채점 완료 Topic에 대한 SQS(SubmissionDone.fifo) 와 그에 대한 행동 처리
+
+## 구현 진행 상황 (Final)
+- Time/Memory Limitation 내용들 Eureka를 통해 획득 및 전달
+- Time/Memory Usage 저장 & GET 요청에서 해당 내용 포함시킴
+- Throttling 기능 구현(Redis 를 사용해서 내부적인 큐로 사용) -> 1초에 한 개의 작업만이 보내진다
 
 ## TODO
 - 문제 관리 서비스에 Eureka 로 물어보는 로직 연동(현재 name-resolution failure)

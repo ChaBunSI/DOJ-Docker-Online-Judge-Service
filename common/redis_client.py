@@ -1,11 +1,18 @@
-import redis
+# default
 import json
-from typing import Dict
+from threading import Thread
 import time
 
+# typing
+from typing import Dict
+
+# pip
+import redis
+
+# custom
 from common.topic_manager import publish_message
 from settings.literals import AWS_SNS_TOPIC_SUBMIT
-from threading import Thread
+
 class RedisQueue(object):
     """
         Redis Lists are an ordered list, First In First Out Queue
@@ -42,6 +49,11 @@ class RedisQueue(object):
         element = self.rq.lindex(self.key, -1)
         return element
     
+    def get_from_key(self, key:str):
+        return self.rq.get(key)
+    
+    def set_from_key(self, key:str, value:int):
+        return self.rq.set(key, value)
     
 def consume_task():
     redis_queue = RedisQueue(name="task", host="redis", port=6379, db=0)
@@ -55,9 +67,11 @@ def consume_task():
                 message_obj.pop("timestamp")
             publish_message(AWS_SNS_TOPIC_SUBMIT, message_obj)
             
-            
 def consumer_thread_exec():
     t = Thread(target=consume_task)
     t.daemon=True
     t.start()
     print("Consuming On Progress")
+    
+    
+    

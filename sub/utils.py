@@ -14,12 +14,13 @@ from django.utils import timezone
 
 # custom
 from sub.models import Submission
-from sub.parameters import JC_DICT, USER_ID
+from sub.serializers import SubmissionDetailSerializer
+from sub.parameters import JC_DICT, USER_ID, TIME_LIMITED, MEM_LIMITED
 
 # common
 from common.redis_client import RedisQueue
-from common.topic_manager import publish_message
-from settings.literals import AWS_SNS_TOPIC_SUBMIT
+from common.eureka_manager import ask_problem_to_pm
+
 
 def create_message(message:Dict, is_success:bool=True):
     ret_data = {}
@@ -110,21 +111,49 @@ def process_submission(message_batch:List[Dict]):
         
     print(f"Updated {len(sub_update_bulk_list)} Submissions")
 
+def get_limitations(problem_id:int, token:str)->Dict:
+    limit_dict = {}
+    redis_queue = RedisQueue(name="limit", host="redis", port=6379, db=0)
+    
+    time_limited = redis_queue.get_from_key(f"tl_{problem_id}")
+    memory_limited = redis_queue.get_from_key(f"ml_{problem_id}")
+    
+    if(time_limited is not None and memory_limited is not None):
+        time_limited = int(time_limited)
+        memory_limited = int(memory_limited)
+        limit_dict[TIME_LIMITED] = time_limited
+        limit_dict[MEM_LIMITED] = memory_limited
+    else:
+        eureka_result = ask_problem_to_pm(problem_id, {}, token)
+        time_limited = eureka_result.get(TIME_LIMITED)
+        memory_limited = eureka_result.get(MEM_LIMITED)
+        redis_queue.set_from_key(f"tl_{problem_id}", time_limited)
+        redis_queue.set_from_key(f"ml_{problem_id}", memory_limited)
+        limit_dict[TIME_LIMITED] = time_limited
+        limit_dict[MEM_LIMITED] = memory_limited
+
+    
+    return limit_dict
+
 def generate_task(queue_data:Dict):
     redis_queue = RedisQueue(name="task", host="redis", port=6379, db=0)
     queue_data["timestamp"] = str(timezone.localtime())
     queue_str = json.dumps(queue_data)
     redis_queue.put(queue_str)
     
+
+# def init_tasks():
+#     redis_queue = RedisQueue(name="task", host="redis", port=6379, db=0)
     
-def consume_task():
-    redis_queue = RedisQueue(name="task", host="redis", port=6379, db=0)
-    while True:
-        message = redis_queue.get(isBlocking=False)
-        if message is not None:
-            message_obj:Dict = json.loads(message)
-            if(message_obj.get("timestamp")):
-                message_obj.pop("timestamp")
-            publish_message(AWS_SNS_TOPIC_SUBMIT, message_obj)
-            
-    
+#     print("Pop Start")
+#     while (not redis_queue.isEmpty()):
+#         redis_queue.get(isBlocking=False)
+        
+#     print("Pop Done")
+#     submissions = Submission.objects.filter(judge_status=0)
+#     if submissions.exists():
+#         submissions = list(submissions)
+#         queue_list = SubmissionDetailSerializer(submissions, many=True).data
+#         for queue_item in queue_list:
+#             # fetch time limitations
+#             print(queue_item)

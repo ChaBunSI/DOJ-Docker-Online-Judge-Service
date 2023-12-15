@@ -23,4 +23,3 @@ class Submission(models.Model):
     # Usage Info
     memory_used = models.IntegerField(default=-1, null=True, blank=True)
     time_used = models.IntegerField(default=-1, null=True, blank=True)
-    

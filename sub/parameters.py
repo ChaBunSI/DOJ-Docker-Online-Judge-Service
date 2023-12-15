@@ -33,6 +33,7 @@ JC_TLE = 5
 JC_MLE = 6
 JC_OLE = 7
 JC_SE = 8
+JC_INQ = 9
 
 JC_NJ_DESC = "Not Judged"
 JC_AC_DESC = "Accepted"
@@ -43,6 +44,7 @@ JC_TLE_DESC = "Time Limit Exceeded"
 JC_MLE_DESC = "Memory Limit Exceeded"
 JC_OLE_DESC = "Output Limit Exceeded"
 JC_SE_DESC = "Sandbox Error"
+JC_INQ_DESC ="In Queue"
 
 
 JC_DICT = {
