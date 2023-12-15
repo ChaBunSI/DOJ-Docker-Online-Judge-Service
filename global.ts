@@ -49,6 +49,12 @@ export interface SubmitDataInterface {
   start_time: string;
   end_time: any;
   problem_id: number;
+
+  time_used: number;
+  memory_used: number;
+
+  tc_cur: number;
+  tc_total: number;
 }
 
 export const getLanguage = (num: number) => {
@@ -120,3 +126,14 @@ export const INIT_CODE_LIST = [
   INIT_CODE_JAVA,
   INIT_CODE_PYTHON,
 ];
+
+export interface RealTimeInfoInterface {
+  id: number;
+  problem_id: number;
+  tc_total: number;
+  tc_cur: number;
+  result: number;
+
+  time_used: number;
+  memory_used: number;
+}

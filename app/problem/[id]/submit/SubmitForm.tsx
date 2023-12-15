@@ -6,6 +6,7 @@ import { ChangeEvent, useState } from "react";
 import { INIT_CODE_LIST, ProblemDataInterface, fetchGroup } from "@/global";
 import { useRouter } from "next/navigation";
 import { Editor } from "@monaco-editor/react";
+import toast from "react-hot-toast";
 
 export default function SubmitForm({
   problemData,
@@ -116,11 +117,10 @@ export default function SubmitForm({
                   source: code,
                 }
               );
-              alert("제출 성공");
-
               router.push("/submission/" + data.data.id);
+              toast.success("Submit Success");
             } catch {
-              alert("제출 실패");
+              toast.error("Submit Failed");
             }
           }}
         >

@@ -1,15 +1,82 @@
+"use client";
+
 import Link from "next/link";
 import styles from "../page.module.css";
 import pStyles from "../problem.module.css";
 import Image from "next/image";
-import { BASE_URL, SubmitDataInterface, getLanguage } from "@/global";
+import {
+  BASE_URL,
+  RealTimeInfoInterface,
+  SubmitDataInterface,
+  getLanguage,
+} from "@/global";
+import { useEffect, useRef, useState } from "react";
+import { Socket, io } from "socket.io-client";
 
-export default async function Submission() {
-  const { data: submitDataList }: { data: SubmitDataInterface[] } = await (
-    await fetch(`${BASE_URL}/submission_service/submissions?target=all`, {
-      cache: "no-cache",
-    })
-  ).json();
+export default function Submission() {
+  const [loading, setLoading] = useState(true);
+  const [submitData, setSubmitData] = useState<SubmitDataInterface[]>([]);
+  const socket = useRef<Socket>();
+
+  useEffect(() => {
+    (async () => {
+      const { data }: { data: SubmitDataInterface[] } = await (
+        await fetch(`${BASE_URL}/submission_service/submissions?target=all`, {
+          cache: "no-cache",
+        })
+      ).json();
+      setLoading(false);
+      setSubmitData(data);
+      const waitingList = data
+        .filter((item) => {
+          return item.judge_status === 0;
+        })
+        .map((i) => i.id);
+
+      socket.current = io("wss://api.goodpose.shop", {
+        path: "/rt_service/socket.io",
+      });
+
+      socket.current.on("connect", () => {
+        socket.current?.emit("requestSubmitList", waitingList);
+      });
+
+      socket.current.on("newInfo", (data: RealTimeInfoInterface) => {
+        setSubmitData((prev) => {
+          const newSubmitData = [...prev];
+
+          const index = newSubmitData.findIndex((item) => item.id === data.id);
+
+          if (data.time_used && data.memory_used) {
+            newSubmitData[index].time_used = data.time_used;
+            newSubmitData[index].memory_used = data.memory_used;
+            newSubmitData[index].tc_cur = 0;
+            newSubmitData[index].tc_total = 0;
+            newSubmitData[index].judge_status = 1;
+            newSubmitData[index].judge_description = "Accepted";
+
+            return newSubmitData;
+          }
+
+          if (data.result === 1) {
+            newSubmitData[index].tc_cur = data.tc_cur;
+            newSubmitData[index].tc_total = data.tc_total;
+          } else {
+            newSubmitData[index].tc_cur = 0;
+            newSubmitData[index].tc_total = 0;
+            newSubmitData[index].judge_status = data.result;
+            newSubmitData[index].judge_description = "Wrong Answer";
+          }
+
+          return newSubmitData;
+        });
+      });
+    })();
+
+    return () => {
+      socket.current?.disconnect();
+    };
+  }, []);
 
   return (
     <main className={pStyles.main}>
@@ -29,7 +96,8 @@ export default async function Submission() {
         <div className={pStyles.problem_wrapper}>
           <h1>Submissions</h1>
           <div className={pStyles.problem_list}>
-            {submitDataList.map((item) => (
+            {loading && <p>Loading...</p>}
+            {submitData.map((item) => (
               <Link
                 href={"/submission/" + item.id}
                 key={item.id}
@@ -51,8 +119,15 @@ export default async function Submission() {
                       : pStyles.wa
                   }
                 >
-                  Result: {item.judge_description}{" "}
-                  {item.judge_status === 1 && `(Time: 255ms, Mem: 999TB)`}
+                  Result:{" "}
+                  {item.tc_cur
+                    ? `Judging... (${(
+                        (item.tc_cur / item.tc_total) *
+                        100
+                      ).toFixed(0)}%)`
+                    : `${item.judge_description}`}
+                  {item.judge_status === 1 &&
+                    ` ( Time: ${item.time_used} ms, Mem: ${item.memory_used} KB )`}
                 </p>
               </Link>
             ))}
