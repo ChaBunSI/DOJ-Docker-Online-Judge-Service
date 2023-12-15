@@ -138,7 +138,7 @@ setInterval(() => {
         console.log("receiveMessage: ", body);
 
         submitMap.sendInfo(body.id, body);
-        if (body.result !== 1 || body.tc_total === body.tc_cur) {
+        if (body.result !== 1 || body.time_used) {
           submitMap.cleanUp(body.id);
         }
 
