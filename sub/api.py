@@ -102,13 +102,13 @@ def submissions(request:WSGIRequest):
         query_object = Q()
         query_object.add(Q(user_id=user_id), query_object.AND)
         queryset = Submission.objects.filter(query_object)
-        print(f"[1] {queryset.raw}")
+        print(f"[1] {queryset.query}")
         ret_data = SubmissionBasicSerializer(queryset, many=True).data
         is_success = True
         
     else:
         queryset = Submission.objects.all()
-        print(f"[2] {queryset.raw}")
+        print(f"[2] {queryset.query}")
         is_success = True
         ret_data = SubmissionBasicSerializer(queryset, many=True).data
     
