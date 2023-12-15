@@ -10,7 +10,7 @@ const QUEUE_URL =
   "https://sqs.ap-northeast-2.amazonaws.com/262981387273/JudgeRT.fifo";
 const PORT = 5000;
 
-new Eureka({
+const client = new Eureka({
   instance: {
     app: "RT-SERVICE",
     hostName: "10.178.0.3",
@@ -22,6 +22,7 @@ new Eureka({
     vipAddress: "RT-SERVICE",
     dataCenterInfo: {
       name: "MyOwn",
+      "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
     },
   },
   eureka: {
@@ -29,6 +30,10 @@ new Eureka({
     port: 8761,
     servicePath: "/eureka/apps",
   },
+});
+
+client.start((error) => {
+  console.log(error || "Eureka에 등록되었습니다.");
 });
 
 AWS.config.update({
