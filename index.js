@@ -6,12 +6,16 @@ const { Server } = require("socket.io");
 const AWS = require("aws-sdk");
 const Eureka = require("eureka-js-client").Eureka;
 
+const QUEUE_URL =
+  "https://sqs.ap-northeast-2.amazonaws.com/262981387273/JudgeRT.fifo";
+const PORT = 5000;
+
 new Eureka({
   instance: {
     app: "RT-SERVICE",
     hostName: "10.178.0.3",
     ipAddr: "10.178.0.3",
-    port: 4000,
+    port: PORT,
     vipAddress: "jq.test.something.com",
     dataCenterInfo: {
       name: "MyOwn",
@@ -28,10 +32,6 @@ AWS.config.update({
   secretAccessKey: "SljAFUmwo7Ia4x2UQ1eK89NpBbX+JdynxsZIJJQ6",
   region: "ap-northeast-2",
 });
-
-const QUEUE_URL =
-  "https://sqs.ap-northeast-2.amazonaws.com/262981387273/JudgeRT.fifo";
-const PORT = 4000;
 
 var sqs = new AWS.SQS();
 const param = {
