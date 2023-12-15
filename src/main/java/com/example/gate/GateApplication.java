@@ -45,6 +45,13 @@ public class GateApplication {
 						)
 						.uri("lb://PROBLEM-MANAGE-SERVICE")
 				)
+				.route(p -> p
+						.path("/rt_service/**")
+						.filters(f -> f
+								.rewritePath("/rt_service", "/")
+						)
+							.uri("lb://RT-SERVICE")
+				)
 				.build();
 	}
 
