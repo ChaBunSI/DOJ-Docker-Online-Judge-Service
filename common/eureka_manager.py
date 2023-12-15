@@ -58,7 +58,7 @@ def ask_problem_to_pm(problem_id:int, data:Dict, token:str="")->Dict:
             memory_limited = problem_obj.get(parameters.MEM_LIMITED, 100)
             time_limited = problem_obj.get(parameters.TIME_LIMITED, 100)
             ret_obj[parameters.MEM_LIMITED] = memory_limited
-            ret_obj[parameters.TIME_LIMITED] = time_limited
+            ret_obj[parameters.TIME_LIMITED] = time_limited * 1000
             print(f"Get Limit Info -> {ret_obj}")
     except Exception as e: 
         print(e)
