@@ -16,7 +16,11 @@ new Eureka({
     hostName: "10.178.0.3",
     ipAddr: "10.178.0.3",
     port: PORT,
-    vipAddress: "10.178.0.3",
+    port: {
+      $: PORT,
+      "@enabled": true,
+    },
+    vipAddress: "RT-SERVICE",
     dataCenterInfo: {
       name: "MyOwn",
     },
@@ -24,6 +28,7 @@ new Eureka({
   eureka: {
     host: "10.178.0.3",
     port: 8761,
+    servicePath: "/eureka/apps",
   },
 });
 
