@@ -6,6 +6,7 @@ import sys
 
 # tasks
 from common.queue_manager import sqs_thread_exec
+from common.redis_client import consumer_thread_exec
 def main():
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
@@ -21,6 +22,7 @@ def main():
         
     if os.environ.get("RUN_MAIN", None) == "true" and "runserver" in sys.argv:
         sqs_thread_exec(["SubmissionDone.fifo"])
+        consumer_thread_exec()
     execute_from_command_line(sys.argv)
 
 

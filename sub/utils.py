@@ -16,6 +16,11 @@ from django.utils import timezone
 from sub.models import Submission
 from sub.parameters import JC_DICT, USER_ID
 
+# common
+from common.redis_client import RedisQueue
+from common.topic_manager import publish_message
+from settings.literals import AWS_SNS_TOPIC_SUBMIT
+
 def create_message(message:Dict, is_success:bool=True):
     ret_data = {}
     ret_data["data"] = message
@@ -104,4 +109,22 @@ def process_submission(message_batch:List[Dict]):
         )
         
     print(f"Updated {len(sub_update_bulk_list)} Submissions")
+
+def generate_task(queue_data:Dict):
+    redis_queue = RedisQueue(name="task", host="redis", port=6379, db=0)
+    queue_data["timestamp"] = str(timezone.localtime())
+    queue_str = json.dumps(queue_data)
+    redis_queue.put(queue_str)
+    
+    
+def consume_task():
+    redis_queue = RedisQueue(name="task", host="redis", port=6379, db=0)
+    while True:
+        message = redis_queue.get(isBlocking=False)
+        if message is not None:
+            message_obj:Dict = json.loads(message)
+            if(message_obj.get("timestamp")):
+                message_obj.pop("timestamp")
+            publish_message(AWS_SNS_TOPIC_SUBMIT, message_obj)
             
+    

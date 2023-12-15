@@ -37,3 +37,6 @@ EUREKA_PORT=get_env_value("EUREKA_PORT", 8761)
 INSTANCE_HOST=get_env_value("INSTANCE_HOST","10.178.0.3")
 INSTANCE_PORT=get_env_value("INSTANCE_PORT", 8081)
 INSTANCE_APP_NAME = get_env_value("INSTANCE_APP_NAME", "SUBMISSION-SERVICE")
+
+# Redis Stuffs
+REDIS_HOST = get_env_value("REDIS_HOST", "redis")
