@@ -108,9 +108,14 @@ def submissions(request:WSGIRequest):
         
     else:
         queryset = Submission.objects.all()
+        origin_length = len(queryset)
         print(f"[2] {queryset.query}")
         is_success = True
         ret_data = SubmissionBasicSerializer(queryset, many=True).data
+        after_length = len(ret_data)
+        print(queryset)
+        print(f"from: {origin_length} | to: {after_length}")
+        print(ret_data)
     
     return message_response(ret_data, is_success)
 
