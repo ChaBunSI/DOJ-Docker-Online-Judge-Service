@@ -79,7 +79,7 @@ def submission(request:WSGIRequest, problem_id:int=-1):
     
     if(problem_id!=-1):
         query_object.add(Q(problem_id=problem_id), query_object.AND)
-        queryset = Submission.objects.filter(query_object).order_by("-id")
+        queryset = Submission.objects.filter(query_object).order_by("id")
         if(queryset.exists()):
             ret_data = SubmissionBasicSerializer(queryset, many=True).data
             is_success = True
@@ -106,7 +106,7 @@ def submissions(request:WSGIRequest):
         is_success = True
         
     else:
-        queryset = Submission.objects.all().order_by("-id")
+        queryset = Submission.objects.all().order_by("id")
         is_success = True
         ret_data = SubmissionBasicSerializer(queryset, many=True).data
             
