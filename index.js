@@ -4,7 +4,6 @@ const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const AWS = require("aws-sdk");
-const cors = require("cors");
 const Eureka = require("eureka-js-client").Eureka;
 
 const QUEUE_URL =
@@ -49,12 +48,10 @@ const param = {
 };
 
 const io = new Server(server, {
-  cors: {
-    origin: "*",
-  },
+  // cors: {
+  //   origin: "*",
+  // },
 });
-
-app.use(cors());
 
 class SubmitMap {
   constructor() {
