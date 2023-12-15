@@ -1,3 +1,8 @@
 FROM node:18.19.0-alpine
 
-# Create app directory
+WORKDIR /app
+COPY . /app
+
+RUN npm install
+
+CMD ["npm", "run", "dev"]

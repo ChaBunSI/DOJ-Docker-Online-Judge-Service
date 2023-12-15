@@ -4,6 +4,24 @@ const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const AWS = require("aws-sdk");
+const Eureka = require("eureka-js-client").Eureka;
+
+new Eureka({
+  instance: {
+    app: "RT-SERVICE",
+    hostName: "10.178.0.3",
+    ipAddr: "10.178.0.3",
+    port: 4000,
+    vipAddress: "jq.test.something.com",
+    dataCenterInfo: {
+      name: "MyOwn",
+    },
+  },
+  eureka: {
+    host: "10.178.0.3",
+    port: 8761,
+  },
+});
 
 AWS.config.update({
   accessKeyId: "AKIAT2OXJQQESOXLJ4X3",
@@ -123,8 +141,4 @@ setInterval(() => {
       });
     }
   });
-}, 50);
-
-setInterval(() => {
-  // console.log(submitMap.map.get(1).length);
-}, 1000);
+}, 25);
