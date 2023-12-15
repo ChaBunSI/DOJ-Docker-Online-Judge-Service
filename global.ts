@@ -135,5 +135,5 @@ export interface RealTimeInfoInterface {
   result: number;
 
   time_used: number;
-  memory_used: number;
+  mem_used: number;
 }

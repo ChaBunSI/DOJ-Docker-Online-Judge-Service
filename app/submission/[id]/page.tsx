@@ -52,9 +52,9 @@ export default function Submission({ params: { id } }: any) {
         setSubmitData((prev) => {
           if (prev) {
             const newSubmitData: SubmitDataInterface = { ...prev };
-            if (data.memory_used) {
+            if (data.mem_used) {
               newSubmitData.time_used = data.time_used;
-              newSubmitData.memory_used = data.memory_used;
+              newSubmitData.memory_used = data.mem_used;
               newSubmitData.tc_cur = 0;
               newSubmitData.tc_total = 0;
               newSubmitData.judge_status = 1;
