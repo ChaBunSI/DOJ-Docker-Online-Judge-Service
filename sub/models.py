@@ -20,5 +20,7 @@ class Submission(models.Model):
     start_time = models.DateTimeField(default=timezone.localtime, null=True, blank=True) # 채점 시작(서버로 보냄) -> 아직은 애매하다
     end_time = models.DateTimeField(null=True, blank=True) # 채점 시간
     
-    # 기타 Limitation 관련 내용들은 일단 포함시키지 않도록 하자
+    # Usage Info
+    memory_used = models.IntegerField(default=-1, null=True, blank=True)
+    time_used = models.IntegerField(default=-1, null=True, blank=True)
     

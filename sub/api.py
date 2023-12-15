@@ -22,7 +22,7 @@ from common.topic_manager import publish_message
 from common.eureka_manager import ask_problem_to_pm
 
 # literals
-from sub.parameters import SOURCE, LANGUAGE, LANGUAGE_DEFAULT, LANGUAGE_C, LANGUAGE_JAVA, LANGUAGE_PYTHON, SOURCE_DEFAULT, USER_ID, ACCESS_TOKEN, LANGUAGE_CPP, JC_NJ, JC_NJ_DESC, JC_AC
+from sub.parameters import SOURCE, LANGUAGE, LANGUAGE_DEFAULT, LANGUAGE_C, LANGUAGE_JAVA, LANGUAGE_PYTHON, SOURCE_DEFAULT, USER_ID, ACCESS_TOKEN, LANGUAGE_CPP, JC_NJ, JC_NJ_DESC, JC_AC, TIME_LIMITED, MEM_LIMITED
 from settings.literals import AWS_SNS_TOPIC_SUBMIT
 
 # GET
@@ -51,12 +51,15 @@ def submit(request:WSGIRequest, problem_id:int):
     
     
     # Get Limitations(Time/Memory) from P.M Server
-    limit_dict = ask_problem_to_pm(problem_id, {}, access_token)
+    #limit_dict = ask_problem_to_pm(problem_id, {}, access_token)
+    limit_dict = {}
     
     if(user_id is None or len(source)==0 or language_code not in [LANGUAGE_C, LANGUAGE_JAVA, LANGUAGE_PYTHON, LANGUAGE_CPP]):
         is_success = False
         ret_data = {}
     else:
+        # get value from them.
+        limit_dict = ask_problem_to_pm(problem_id, {}, access_token)
         sub_object = Submission.objects.create(
             problem_id = problem_id,
             user_id = user_id,
@@ -67,12 +70,11 @@ def submit(request:WSGIRequest, problem_id:int):
         )
         ret_data = SubmissionBasicSerializer(sub_object).data
         queue_data = SubmissionDetailSerializer(sub_object).data
-        queue_data["memory_limited"] = limit_dict.get("memory_limited", 100)
-        queue_data["time_limited"] = limit_dict.get("time_limited", 2000)
+        
+        # ask to problem_manage server
+        queue_data[MEM_LIMITED] = limit_dict.get(MEM_LIMITED, 100)
+        queue_data[TIME_LIMITED] = limit_dict.get(TIME_LIMITED, 2000)
         is_success = True
-        
-        
-        # 응답은 준비 완료
         
         # 메시지 큐에 보내주도록 하자구
         publish_message(AWS_SNS_TOPIC_SUBMIT, queue_data)

@@ -61,3 +61,9 @@ JC_DICT = {
 # APP
 APP_NAME_PM = "PROGRAM-MANAGE-SERVICE"
 APP_NAME_AUTH = "AUTH-SERVICE"
+
+# PARAMETERS
+MEM_LIMITED = "memory_limited"
+TIME_LIMITED="time_limited"
+MEM_USED = "memory_used"
+TIME_USED="time_used"

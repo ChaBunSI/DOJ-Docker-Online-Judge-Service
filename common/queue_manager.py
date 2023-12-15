@@ -63,6 +63,8 @@ def sqs_consume(queue_name:str):
                     submission_id = message_item.get("id")
                     judge_result = message_item.get("judge_result")
                     error_message = message_item.get("error_message")
+                    memory_used = message_item.get("memory_used")
+                    time_used = message_item.get("time_used")
                     
                     id_list.append(submission_id)
                     message_batch.append(
@@ -70,6 +72,8 @@ def sqs_consume(queue_name:str):
                             "id": submission_id,
                             "judge_result": judge_result,
                             "error_message": error_message,
+                            "memory_used": memory_used,
+                            "time_used":time_used,
                         }
                     )
                 except Exception as e:

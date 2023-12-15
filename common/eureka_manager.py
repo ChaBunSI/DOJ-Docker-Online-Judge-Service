@@ -1,6 +1,7 @@
 # default
 import asyncio
 import json
+import traceback
 
 # typing
 from typing import Dict
@@ -32,13 +33,14 @@ async def eureka_request_wrapper(app_name:str, service_name:str, data:Dict, meth
             timeout=1,
         )
     except Exception as e:
+        traceback.print_exc()
         print(f"eureka error -> {e}")
         res = None
     return res
 
 def eureka_request(app_name:str, service_name:str, data:Dict, method:str="GET", token:str=""):
-    # res = asyncio.run(eureka_request_wrapper(app_name, service_name, data, method, token))
-    return None
+    res = asyncio.run(eureka_request_wrapper(app_name, service_name, data, method, token))
+    return res
 
 
 def ask_problem_to_pm(problem_id:int, data:Dict, token:str="")->Dict:
@@ -53,10 +55,12 @@ def ask_problem_to_pm(problem_id:int, data:Dict, token:str="")->Dict:
     try:
         if res is not None:
             problem_obj:Dict = json.loads(res)
-            memory_limited = problem_obj.get("memory_limited", 100)
-            time_limited = problem_obj.get("time_limited", 100)
-            ret_obj["memory_limited"] = memory_limited
-            ret_obj["time_limited"] = time_limited
-    except: 
-        ret_obj = {"memory_limited":100, "time_limited":100}
+            memory_limited = problem_obj.get(parameters.MEM_LIMITED, 100)
+            time_limited = problem_obj.get(parameters.TIME_LIMITED, 100)
+            ret_obj[parameters.MEM_LIMITED] = memory_limited
+            ret_obj[parameters.TIME_LIMITED] = time_limited
+            print(f"Get Limit Info -> {ret_obj}")
+    except Exception as e: 
+        print(e)
+        ret_obj = {parameters.MEM_LIMITED:100, parameters.TIME_LIMITED:2000}
     return ret_obj

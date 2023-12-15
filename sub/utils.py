@@ -66,11 +66,13 @@ def process_submission(message_batch:List[Dict]):
         submission_id = msg_item.get("id")
         judge_result = msg_item.get("judge_result")
         error_message = msg_item.get("error_message")
+        memory_used = msg_item.get("memory_used")
+        time_used = msg_item.get("time_used")
         if judge_result is not None:
             judge_result = int(judge_result)
             judge_descsription = JC_DICT.get(judge_result, "")
             query_object.add(Q(id=submission_id), query_object.OR)
-            temp_dict[submission_id] = {"judge_status": judge_result, "error_message":error_message, "judge_description": judge_descsription}
+            temp_dict[submission_id] = {"judge_status": judge_result, "error_message":error_message, "judge_description": judge_descsription, "time_used":time_used, "memory_used":memory_used}
     
     if query_object:
         target_submissions = list(Submission.objects.filter(query_object))
@@ -82,6 +84,8 @@ def process_submission(message_batch:List[Dict]):
                 sub_item.judge_status = temp_item.get("judge_status")
                 sub_item.judge_description = temp_item.get("judge_description", "")
                 sub_item.error_message = temp_item.get("error_message", "")
+                sub_item.memory_used = temp_item.get("memory_used")
+                sub_item.time_used = temp_item.get("time_used")
                 sub_item.end_time = timezone.localtime()
                 sub_update_bulk_list.append(sub_item)
         
@@ -94,6 +98,8 @@ def process_submission(message_batch:List[Dict]):
                 "judge_description",
                 "error_message",
                 "end_time",
+                "memory_used",
+                "time_used",
             ]
         )
         

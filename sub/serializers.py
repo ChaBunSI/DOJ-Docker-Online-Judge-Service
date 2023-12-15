@@ -20,6 +20,8 @@ class SubmissionBasicSerializer(serializers.ModelSerializer):
             "created_time",
             "start_time",
             "end_time",
+            "memory_used",
+            "time_used",
         ]
         
 class SubmissionDetailSerializer(serializers.ModelSerializer):
@@ -40,4 +42,6 @@ class SubmissionDetailSerializer(serializers.ModelSerializer):
             "created_time",
             "start_time",
             "end_time",
+            "memory_used",
+            "time_used",
         ]
