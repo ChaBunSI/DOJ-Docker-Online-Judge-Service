@@ -15,7 +15,6 @@ new Eureka({
     app: "RT-SERVICE",
     hostName: "10.178.0.3",
     ipAddr: "10.178.0.3",
-    port: PORT,
     port: {
       $: PORT,
       "@enabled": true,
