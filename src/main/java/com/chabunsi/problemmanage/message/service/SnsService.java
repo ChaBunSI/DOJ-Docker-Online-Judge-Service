@@ -29,6 +29,8 @@ public class SnsService {
                 .messageGroupId(messageGroupId)
                 .build();
 
+        System.out.println("Send Topic : " + data);
+
         SnsClient snsClient = awsConfig.getSnsClient();
         PublishResponse publishResponse = snsClient.publish(publishRequest);
 

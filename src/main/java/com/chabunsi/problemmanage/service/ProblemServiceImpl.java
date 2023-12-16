@@ -62,6 +62,13 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public void deleteProblem(Long problemId) {
+        Problem problem = problemRepository.getReferenceById(problemId);
+        if(!problem.getTestCaseList().isEmpty()) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("problemId", problem.getId());
+            map.put("eventType", "TestCase_DELETE");
+            map.put("testCases", problem.getTestCaseList().stream().map(tc -> TestCase.builder().id(tc.getId()).input(tc.getInput()).output(tc.getOutput()).build()).collect(Collectors.toList()));
+        }
         problemRepository.deleteById(problemId);
     }
 
