@@ -105,7 +105,8 @@ export default function Submission() {
                 className={pStyles.problem_block}
               >
                 <h2>
-                  Submission #{item.id} (Problem #{item.problem_id})
+                  Submission #{item.id} (Problem #{item.problem_id}, User #
+                  {item.user_id})
                 </h2>
                 <p>
                   Submitted At: {new Date(item.created_time).toLocaleString()}

@@ -137,3 +137,17 @@ export interface RealTimeInfoInterface {
   time_used: number;
   mem_used: number;
 }
+
+export interface UserStatInfoInterface {
+  total_count: number;
+  success_count: number;
+  fail_count: number;
+  success_problems: number[];
+  fail_problems: number[];
+}
+
+export interface UserInfoInterfase {
+  id: number;
+  name: string;
+  email: string;
+}

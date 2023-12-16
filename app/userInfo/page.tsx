@@ -1,10 +1,17 @@
 import Link from "next/link";
 import styles from "../page.module.css";
 import pStyles from "../problem.module.css";
+import uStyles from "./user.module.css";
 import Image from "next/image";
-import { SubmitDataInterface, getLanguage } from "@/global";
+import { BASE_URL, UserInfoInterfase } from "@/global";
 
-export default async function AddProblem() {
+export default async function UserInfo() {
+  const data: UserInfoInterfase[] = await (
+    await fetch(`${BASE_URL}/auth/user`, {
+      cache: "no-cache",
+    })
+  ).json();
+
   return (
     <main className={pStyles.main}>
       <div className={styles.description}>
@@ -21,8 +28,21 @@ export default async function AddProblem() {
       </div>
       <div className={styles.center}>
         <div className={pStyles.problem_wrapper}>
-          <h1>Submissions</h1>
-          <div className={pStyles.problem_list}></div>
+          <h1>User Info</h1>
+          <div className={pStyles.problem_list}>
+            {data.map((item) => (
+              <Link
+                className={pStyles.problem_block}
+                key={item.id}
+                href={`/userInfo/${item.id}`}
+              >
+                <h2>
+                  {item.name} (#{item.id})
+                </h2>
+                <p>email: {item.email}</p>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
       <div></div>

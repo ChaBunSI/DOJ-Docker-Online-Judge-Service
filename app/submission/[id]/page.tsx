@@ -110,10 +110,15 @@ export default function Submission({ params: { id } }: any) {
                   &lt;-
                 </Link>
                 <h1>
-                  Submission #{submitData.id}&nbsp;
+                  Submission #{submitData.id}&nbsp; (
                   <Link href={`/problem/${submitData.problem_id}`}>
-                    (Problem #{submitData.problem_id})
+                    Problem #{submitData.problem_id}
                   </Link>
+                  ,&nbsp;
+                  <Link href={`/userInfo/${submitData.user_id}`}>
+                    User #{submitData.user_id}
+                  </Link>
+                  )
                 </h1>
                 <div></div>
               </div>
