@@ -32,7 +32,6 @@ public class SnsService {
         SnsClient snsClient = awsConfig.getSnsClient();
         PublishResponse publishResponse = snsClient.publish(publishRequest);
 
-        snsClient.close();
         return publishResponse;
     }
 }

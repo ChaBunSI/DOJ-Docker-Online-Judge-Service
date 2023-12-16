@@ -84,7 +84,9 @@ public class ProblemServiceImpl implements ProblemService {
     public void updateByResultSubmit(ResultSubmit submit) {
         System.out.println(submit);
 
-        Problem problem = problemRepository.getReferenceById(submit.getProblem_id());
+        Problem problem = problemRepository.findById(submit.getProblem_id()).orElse(null);
+        if(problem == null)
+            return;
 
         if(submit.getJudge_result() == JudgeResult.AC.getValue()) {
             problem.setSolve_num(problem.getSolve_num() + 1);

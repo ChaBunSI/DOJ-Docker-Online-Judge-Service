@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProblemRepository extends JpaRepository<Problem, Long> {
 
-    @Query(value = "SELECT id, title, solve_num, wrong_num\n" +
+    @Query(value = "SELECT id, title, content, solve_num, wrong_num\n" +
             "from problem", nativeQuery = true)
     List<ProblemListItem> findAllProblemList();
 }
