@@ -9,6 +9,7 @@ import {
   RealTimeInfoInterface,
   SubmitDataInterface,
   getLanguage,
+  getSubmitResult,
 } from "@/global";
 import ViewEditor from "./ViewEditor";
 import { useEffect, useRef, useState } from "react";
@@ -139,7 +140,7 @@ export default function Submission({ params: { id } }: any) {
                         (submitData.tc_cur / submitData.tc_total) *
                         100
                       ).toFixed(0)}%)`
-                    : `${submitData.judge_description}`}
+                    : `${getSubmitResult(submitData.judge_status)}`}
                   {submitData.judge_status === 1 &&
                     ` ( Time: ${submitData.time_used} ms, Mem: ${submitData.memory_used} KB )`}
                 </p>

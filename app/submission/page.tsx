@@ -9,6 +9,7 @@ import {
   RealTimeInfoInterface,
   SubmitDataInterface,
   getLanguage,
+  getSubmitResult,
 } from "@/global";
 import { useEffect, useRef, useState } from "react";
 import { Socket, io } from "socket.io-client";
@@ -125,7 +126,7 @@ export default function Submission() {
                         (item.tc_cur / item.tc_total) *
                         100
                       ).toFixed(0)}%)`
-                    : `${item.judge_description}`}
+                    : `${getSubmitResult(item.judge_status)}`}
                   {item.judge_status === 1 &&
                     ` ( Time: ${item.time_used} ms, Mem: ${item.memory_used} KB )`}
                 </p>
