@@ -80,10 +80,6 @@ class SubmitMap {
 
   cleanUp(submitId) {
     if (!this.map.has(submitId)) return;
-    this.map.get(submitId).forEach((socket) => {
-      socket.disconnect(true);
-      socket = null;
-    });
     this.map.delete(submitId);
   }
 
