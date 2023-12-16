@@ -23,13 +23,13 @@ public class Problem {
     @Column
     private String title;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String input_description;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String output_description;
 
     @Column
