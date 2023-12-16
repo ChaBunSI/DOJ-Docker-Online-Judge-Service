@@ -3,6 +3,7 @@ from threading import Thread
 import json
 import os
 import traceback
+import time
 
 # typing 
 from typing import List, Dict
@@ -29,6 +30,7 @@ sqs = session.resource("sqs")
 def sqs_consume(queue_name:str):
     target_queue = sqs.get_queue_by_name(QueueName=queue_name)
     while True:
+        time.sleep(5)
         messages = target_queue.receive_messages(
             MessageAttributeNames=["All"],
             MaxNumberOfMessages=10,

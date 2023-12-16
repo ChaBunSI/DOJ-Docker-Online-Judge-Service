@@ -14,7 +14,6 @@ from django.utils import timezone
 
 # custom
 from sub.models import Submission
-from sub.serializers import SubmissionDetailSerializer
 from sub.parameters import JC_DICT, USER_ID, TIME_LIMITED, MEM_LIMITED
 
 # common
@@ -141,19 +140,3 @@ def generate_task(queue_data:Dict):
     queue_str = json.dumps(queue_data)
     redis_queue.put(queue_str)
     
-
-# def init_tasks():
-#     redis_queue = RedisQueue(name="task", host="redis", port=6379, db=0)
-    
-#     print("Pop Start")
-#     while (not redis_queue.isEmpty()):
-#         redis_queue.get(isBlocking=False)
-        
-#     print("Pop Done")
-#     submissions = Submission.objects.filter(judge_status=0)
-#     if submissions.exists():
-#         submissions = list(submissions)
-#         queue_list = SubmissionDetailSerializer(submissions, many=True).data
-#         for queue_item in queue_list:
-#             # fetch time limitations
-#             print(queue_item)

@@ -58,9 +58,13 @@ class RedisQueue(object):
 def consume_task():
     redis_queue = RedisQueue(name="task", host="redis", port=6379, db=0)
     while True:
+        queue_size = redis_queue.size()
         message = redis_queue.get(isBlocking=False)
         if message is not None:
-            time.sleep(1)
+            if(queue_size) > 200:
+                time.sleep(1)
+            else:
+                time.sleep(0.1)
             print("Fetched From Queue of my own")
             message_obj:Dict = json.loads(message)
             if(message_obj.get("timestamp")):
