@@ -123,12 +123,12 @@ def user_submission_stats(request:WSGIRequest, user_id:int=-1):
         query_object.add(~Q(judge_status=JC_NJ), query_object.AND)
         queryset = Submission.objects.filter(query_object)
         
-        
         success_queryset = queryset.filter(judge_status=JC_AC)
         fail_queryset = queryset.exclude(judge_status=JC_AC)
         
         total_count = len(queryset)
         success_count = len(success_queryset)
+        fail_count = total_count - success_count
         
         success_problems = list(success_queryset.distinct("problem_id"))
         fail_problems = list(fail_queryset.distinct("problem_id"))
@@ -136,10 +136,14 @@ def user_submission_stats(request:WSGIRequest, user_id:int=-1):
         success_problems = [item.problem_id for item in success_problems]
         fail_problems = [item.problem_id for item in fail_problems]
         fail_problems = list(filter(lambda x: x not in success_problems, fail_problems))
-        fail_count = len(fail_problems)
         
+        # 전체 제출
         ret_data["total_count"] = total_count
+        
+        # 성공한 제출
         ret_data["success_count"] = success_count
+        
+        # 성공하지 않은 제출
         ret_data["fail_count"] = fail_count
         
         ret_data["success_problems"] = success_problems
