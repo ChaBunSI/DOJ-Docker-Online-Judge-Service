@@ -45,6 +45,7 @@ AWS.config.update({
 var sqs = new AWS.SQS();
 const param = {
   QueueUrl: QUEUE_URL,
+  MaxNumberOfMessages: 100,
 };
 
 const io = new Server(server, {
@@ -150,4 +151,4 @@ setInterval(() => {
       });
     }
   });
-}, 2000);
+}, 1000);
