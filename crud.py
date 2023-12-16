@@ -33,6 +33,13 @@ def get_members(db: Session, skip: int = 0, limit: int = 100):
     return db.query(Member).offset(skip).limit(limit).all()
 
 
+def get_members_without_pw(db: Session):
+    members = db.query(Member).order_by(Member.id).all()
+    for member in members:
+        delattr(member, 'password')
+    return members
+
+
 def create_member(db: Session, member: MemberCreate):
     hashed_password = get_password_hash(member.password)
     db_member = Member(

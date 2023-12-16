@@ -5,14 +5,14 @@ import py_eureka_client.logger as eureka_logger
 from fastapi import Depends, FastAPI, Request, Response
 from passlib.context import CryptContext
 from fastapi.encoders import jsonable_encoder
-from jose import JWTError, jwt
+from jose import jwt
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
-from crud import create_member, get_member_by_email, get_member_by_email_and_name, get_member_without_pw
+from crud import create_member, get_member_by_email, get_member_by_email_and_name, get_member_without_pw, get_members_without_pw
 
 from db import Base, SessionLocal, engine
-from schemas import Member, MemberCreate
+from schemas import MemberCreate
 
 Base.metadata.create_all(bind=engine)
 
@@ -31,6 +31,7 @@ ALGORITHM = "HS256"
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 app = FastAPI()
+
 
 @app.on_event("startup")
 async def startup_event():
@@ -108,6 +109,13 @@ async def post_create_member(user: MemberCreate, db: Session = Depends(get_db)):
 
     else:
         return Response(status_code=200, content="Member created successfully")
+
+
+@app.get("/user")
+async def get_users(db: Session = Depends(get_db)):
+    db_members = get_members_without_pw(db)
+
+    return JSONResponse(status_code=200, content=jsonable_encoder(db_members))
 
 
 @app.get("/user/{id}")
