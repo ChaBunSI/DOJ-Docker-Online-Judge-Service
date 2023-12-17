@@ -31,8 +31,6 @@ class SubmissionDetailSerializer(serializers.ModelSerializer):
             "id",
             "problem_id",
             "user_id",
-            "is_passed",
-            "is_judged",
             "judge_status",
             "source",
             "language_code",

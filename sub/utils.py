@@ -85,7 +85,7 @@ def process_submission(message_batch:List[Dict]):
             sub_id = sub_item.id
             temp_item = temp_dict.get(sub_id)
             if temp_item is not None:
-                print(f"temp-item -> {temp_item}")
+                print(f"Submission[{sub_id}] -> {temp_item}")
                 sub_item.judge_status = temp_item.get("judge_status")
                 sub_item.judge_description = temp_item.get("judge_description", "")
                 sub_item.error_message = temp_item.get("error_message", "")
