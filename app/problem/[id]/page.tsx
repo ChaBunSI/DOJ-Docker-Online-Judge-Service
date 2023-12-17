@@ -68,7 +68,7 @@ export default async function Problem({ params: { id } }: any) {
               <textarea readOnly value={problemData.testCaseList[0].input} />
             </div>
             <div className={pStyles.problem_chunk}>
-              <h2>Output</h2>
+              <h2>Output Example</h2>
               <textarea readOnly value={problemData.testCaseList[0].output} />
             </div>
           </div>
