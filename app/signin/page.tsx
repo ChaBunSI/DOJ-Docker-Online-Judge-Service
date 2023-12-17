@@ -7,6 +7,7 @@ import axios from "axios";
 import { useInput } from "@/hook/useInput";
 import { BASE_URL, LOCAL_STORAGE_JWT_KEY, fetchGroup } from "@/global";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function SignIn() {
   const router = useRouter();
@@ -77,10 +78,10 @@ export default function SignIn() {
                     },
                   });
 
-                  alert("로그인 성공");
+                  toast.success("Login Success");
                   router.push("/");
                 } catch {
-                  alert("로그인 실패");
+                  toast.error("Login Failed");
                 }
               }}
             >

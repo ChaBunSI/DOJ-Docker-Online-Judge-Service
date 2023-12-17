@@ -5,6 +5,7 @@ import { useTextArea } from "@/hook/useTextArea";
 import { fetchGroup } from "@/global";
 import { useRouter } from "next/navigation";
 import { useInput } from "@/hook/useInput";
+import toast from "react-hot-toast";
 
 export default function AddProblemForm() {
   const router = useRouter();
@@ -86,11 +87,11 @@ export default function AddProblemForm() {
             outputDescription === "" ||
             testCaseJson === ""
           ) {
-            alert("Please fill all the fields");
+            toast.error("Please fill all the fields");
             return;
           }
           if (Number.isNaN(timeLimit) || Number.isNaN(memoryLimit)) {
-            alert("Please fill time and memory limit with numbers");
+            toast.error("Please fill time and memory limit with numbers");
             return;
           }
           try {
@@ -105,7 +106,7 @@ export default function AddProblemForm() {
               }
             });
           } catch (e) {
-            alert("Please fill test case with JSON format");
+            toast.error("Please fill test case with JSON format");
             return;
           }
 
@@ -123,10 +124,10 @@ export default function AddProblemForm() {
               }
             );
 
-            alert("Add Problem Success");
+            toast.success("Add Problem Success");
             router.push("/problem/" + data.id);
           } catch (e) {
-            alert("Please sign in first.");
+            toast.error("Please sign in first.");
             return;
           }
         }}

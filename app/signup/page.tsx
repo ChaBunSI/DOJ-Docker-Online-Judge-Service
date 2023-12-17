@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useInput } from "@/hook/useInput";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function SignUp() {
   const router = useRouter();
@@ -85,7 +86,7 @@ export default function SignUp() {
               className={styles.auth_button}
               onClick={async () => {
                 if (password !== passwordVerify) {
-                  alert("비밀번호가 일치하지 않습니다.");
+                  toast.error("Password does not match");
                   return;
                 }
 
@@ -99,10 +100,10 @@ export default function SignUp() {
                     }
                   );
 
-                  alert("회원가입 성공");
+                  toast.success("Join Success");
                   router.push("/signin");
                 } catch {
-                  alert("회원가입 실패");
+                  toast.error("Join Failed");
                 }
               }}
             >
