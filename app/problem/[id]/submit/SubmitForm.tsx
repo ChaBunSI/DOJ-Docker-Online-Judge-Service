@@ -120,7 +120,7 @@ export default function SubmitForm({
               router.push("/submission/" + data.data.id);
               toast.success("Submit Success");
             } catch {
-              toast.error("Submit Failed");
+              toast.error("Please Login");
             }
           }}
         >
