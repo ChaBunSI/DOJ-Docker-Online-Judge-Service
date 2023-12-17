@@ -37,7 +37,14 @@ export default async function Problems() {
                 className={pStyles.problem_block}
               >
                 <h2>
-                  {item.title} #{item.id}
+                  {item.title} #{item.id} (Correction Rate:{" "}
+                  {item.solve_num + item.wrong_num == 0
+                    ? "0"
+                    : (
+                        (item.solve_num * 100) /
+                        (item.solve_num + item.wrong_num)
+                      ).toFixed(0)}
+                  %)
                 </h2>
                 <style>
                   {`p.show{white-space: nowrap; overflow: hidden;

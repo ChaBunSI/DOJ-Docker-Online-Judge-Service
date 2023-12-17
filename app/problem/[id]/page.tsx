@@ -38,6 +38,18 @@ export default async function Problem({ params: { id } }: any) {
             <Link href={"/problem/" + id + "/submit"}>Submit</Link>
           </div>
           <div className={pStyles.problem_chunk}>
+            <h2>Stats</h2>
+            <p>
+              Correct: {problemData.solve_num}, Wrong: {problemData.wrong_num},
+              Correction Rate:{" "}
+              {problemData.solve_num + problemData.wrong_num == 0
+                ? "0"
+                : (
+                    (problemData.solve_num * 100) /
+                    (problemData.solve_num + problemData.wrong_num)
+                  ).toFixed(0)}
+              %
+            </p>
             <h2>Description</h2>
             <p>
               <LatexRenderer>{problemData.content}</LatexRenderer>
