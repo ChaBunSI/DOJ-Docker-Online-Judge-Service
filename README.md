@@ -3,8 +3,11 @@
 Submission Service
 django + (SQS, SNS)
 
-## 아키텍처 & 기술 목록
-
+## Quick Start?
+- 해당 리포지토리를 git clone
+- docker compose build && docker compose up
+- 8081 포트에 포워딩 됨
+- Eureka 서비스가 올라가 있어야 한다
 
 ## DB Table
 현재는 Submission Table 하나만이 존재한다
@@ -99,7 +102,9 @@ POST /submit/1
         "error_message": "",
         "created_time": "2023-11-17T18:21:33.606742+09:00",
         "start_time": "2023-11-17T18:21:33.607729+09:00",
-        "end_time": null
+        "end_time": null,
+        "memory_used": 60000,
+        "time_used": 500,
     },
     "is_success": true
 }
@@ -131,7 +136,7 @@ POST /submit/1
 ```
 
 ### 4. 사용자의 모든 문제의 모든 제출 목록 확인
-- GET /submissions
+- GET /submissions?target=me
 
 - RESPONSE
 ```
@@ -156,7 +161,7 @@ POST /submit/1
 ```
 
 ### 5. 모든 사용자의 모든 제출 목록 확인
-- GET /all_submissions
+- GET /submissions?target=all
 
 ```
 {
@@ -180,6 +185,22 @@ POST /submit/1
 
 ```
 
+### 6. 사용자의 제출에 대한 Statistics
+- GET /user-submission-stats/{user_id}
+```
+{
+    "data": [
+        {
+            "total_count": 100,
+            "success_count" :90,
+            "fail_count": 10,
+            "success_problems":5
+            "fail_problems": 7
+        }
+    ]
+}
+```
+
 ## 구현 진행 상황 (Midterm)
 - SQS Subscribe -> Daemon Thread 서버 기동시에 실행
 - SNS Publish -> 일회성으로 연결 생성 후 종료시킴
@@ -191,9 +212,8 @@ POST /submit/1
 
 ## 구현 진행 상황 (Final)
 - Time/Memory Limitation 내용들 Eureka를 통해 획득 및 전달
+- 획득한 Limitation 정보는 Redis 를 통해 Caching
 - Time/Memory Usage 저장 & GET 요청에서 해당 내용 포함시킴
-- Throttling 기능 구현(Redis 를 사용해서 내부적인 큐로 사용) -> 1초에 한 개의 작업만이 보내진다
-
-## TODO
-- 문제 관리 서비스에 Eureka 로 물어보는 로직 연동(현재 name-resolution failure)
-- 배포 관련
+- Throttling 기능 구현(Redis 를 사용해서 내부적인 큐로 사용)
+- 1초에 10개의 제출만이 SNS Topic으로 발생되며
+- 이를 초과하는 경우 Redis 에 기록되어 Rate Limit 이 만족될 시 Redis 에서 나옫
