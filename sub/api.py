@@ -123,6 +123,7 @@ def user_submission_stats(request:WSGIRequest, user_id:int=-1):
         query_object.add(~Q(judge_status=JC_NJ), query_object.AND)
         query_object.add(Q(user_id=user_id), query_object.AND)
         queryset = Submission.objects.filter(query_object)
+        print(f"queryset for user -> {user_id}")
         
         success_queryset = queryset.filter(judge_status=JC_AC)
         fail_queryset = queryset.exclude(judge_status=JC_AC)
@@ -146,9 +147,10 @@ def user_submission_stats(request:WSGIRequest, user_id:int=-1):
         
         # 성공하지 않은 제출
         ret_data["fail_count"] = fail_count
-        
         ret_data["success_problems"] = success_problems
         ret_data["fail_problems"] = fail_problems
+        
+        print(f"ret_data for user [{user_id}] -> {ret_data}")
         is_success = True    
 
     return message_response(ret_data , is_success)
