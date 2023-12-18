@@ -36,9 +36,9 @@ app = FastAPI()
 @app.on_event("startup")
 async def startup_event():
     await eureka_client.init_async(
-        eureka_server="http://10.178.0.3:8761/eureka",
+        eureka_server="http://172.17.0.1:8761/eureka",
         app_name="AUTH-SERVICE",
-        instance_host="10.178.0.3",
+        instance_host="172.17.0.1",
         instance_port=81
     )
     eureka_logger.set_level("INFO")
