@@ -13,8 +13,8 @@ const PORT = 5000;
 const client = new Eureka({
   instance: {
     app: "RT-SERVICE",
-    hostName: "10.178.0.3",
-    ipAddr: "10.178.0.3",
+    hostName: "172.17.0.1",
+    ipAddr: "172.17.0.1",
     port: {
       $: PORT,
       "@enabled": true,
@@ -26,7 +26,7 @@ const client = new Eureka({
     },
   },
   eureka: {
-    host: "10.178.0.3",
+    host: "172.17.0.1",
     port: 8761,
     servicePath: "/eureka/apps",
   },
