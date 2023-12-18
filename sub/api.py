@@ -121,6 +121,7 @@ def user_submission_stats(request:WSGIRequest, user_id:int=-1):
     ret_data = {}
     if(user_id !=-1):
         query_object.add(~Q(judge_status=JC_NJ), query_object.AND)
+        query_object.add(Q(user_id=user_id), query_object.AND)
         queryset = Submission.objects.filter(query_object)
         
         success_queryset = queryset.filter(judge_status=JC_AC)
