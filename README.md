@@ -2,6 +2,7 @@
 DOJ의 문제 관리 서비스입니다.
 
 # Content
+[Quick Start](#Quick-Start)
 
 [Service Description](#Service-Description)
 
@@ -12,6 +13,29 @@ DOJ의 문제 관리 서비스입니다.
 [Message Form](#Message-Form)
 
 ---
+
+# Quick Start
+
+## 1. Git Clone
+레포지토리를 클론받으시되, __"제출용"__ 브랜치를 클론받으셔야 합니다. 메인 브랜치에 서버 프로퍼티 파일이 없기 때문입니다.
+
+## 2. Docker Image Build
+본 서비스는 AWS 인프라를 사용하기 때문에 Credentials을 포함한 키값을 파라미터로 넘겨줘야 합니다.
+
+```shell
+docker build -t program_manage_service \
+--build-arg access_key=<access_key> \
+--build-arg secret_key=<secret_key> \
+--build-arg region=<region> \
+--build-arg topic_arn=<topic_arn> \
+--build-arg sqs_name=<sqs_name> \
+--build-arg sqs_url=<sqs_url> .
+```
+
+## 3. Docker Compose
+본 서비스 이미지를 포함하여 모든 이미지가 준비되었을 때, docker compose를 통해 서비스를 올려주시면 됩니다.
+
+__준비중..__
 
 # Service Description
 문제와 테스트케이스를 관리하는 서비스입니다.
