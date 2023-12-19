@@ -39,3 +39,4 @@ out/
 /src/main/resources/application-prod.properties
 /src/main/resources/application-local.properties
 /src/main/resources/application-subject.properties
+/src/main/resources/*.properties
