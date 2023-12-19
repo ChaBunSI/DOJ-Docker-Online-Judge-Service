@@ -30,7 +30,5 @@ public class ReceiveListener {
 
         if(resultSubmit != null)
             problemService.updateByResultSubmit(resultSubmit);
-
-
     }
 }
