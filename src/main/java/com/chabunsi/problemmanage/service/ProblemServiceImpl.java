@@ -68,6 +68,7 @@ public class ProblemServiceImpl implements ProblemService {
             map.put("problemId", problem.getId());
             map.put("eventType", "TestCase_DELETE");
             map.put("testCases", problem.getTestCaseList().stream().map(tc -> TestCase.builder().id(tc.getId()).input(tc.getInput()).output(tc.getOutput()).build()).collect(Collectors.toList()));
+            snsService.awsSnsPublish("TestCaseQueueing", "TestCaseEvent", map);
         }
         problemRepository.deleteById(problemId);
     }
