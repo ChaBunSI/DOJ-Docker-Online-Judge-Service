@@ -36,6 +36,7 @@ def publish_message(topic:str, data:Dict):
         },
     )
     target_arn = res.get("TopicArn")
+    print(f"target arn -> {target_arn}")
     if target_arn is None:
         print(f"not valid topic i presume -> {topic}")
         return
