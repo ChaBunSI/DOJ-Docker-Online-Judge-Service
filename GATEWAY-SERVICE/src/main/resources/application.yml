@@ -1,0 +1,15 @@
+server:
+  port: 80
+
+eureka:
+  instance:
+    hostname: 172.17.0.1
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://172.17.0.1:8761/eureka
+
+spring:
+  application:
+    name: gateway
