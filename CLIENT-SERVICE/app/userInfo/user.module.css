@@ -1,0 +1,59 @@
+.userinfo_wrapper {
+  width: 100%;
+}
+
+.stat_list {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  padding: 20px;
+  list-style: none;
+  background-color: #4d4d4d4f;
+  height: 150px;
+  width: 100%;
+  gap: 20px;
+  border-radius: 10px;
+}
+
+.stat_list_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat_list_item h2,
+.problem_status h2,
+.submission_wrapper h2 {
+  margin-bottom: 5px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.63;
+}
+
+.stat_list_item h2 {
+  text-align: center;
+}
+
+.stat_list_item p {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.63;
+}
+
+.problem_status_list {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  width: 100%;
+  gap: 20px;
+}
+
+.problem_status {
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #4d4d4d4f;
+  width: 100%;
+}
