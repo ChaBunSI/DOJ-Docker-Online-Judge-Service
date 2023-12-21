@@ -1,0 +1,49 @@
+version: "3.9"
+services:
+  db_init:
+    image: postgres
+    volumes:
+      - "postgres_data:/data"
+    entrypoint:
+      - sh
+      - -c
+      - |
+        chown -R 2000:2000 /data
+  db:
+    depends_on:
+      db_init:
+        condition: service_completed_successfully
+    container_name: sub_db
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=ngds
+      - POSTGRES_USER=ngds
+      - POSTGRES_PASSWORD=ngds
+      - PGDATA=/pgdata
+    volumes:
+      - postgres_data:/pgdata
+    user: "2000"
+  submission:
+    container_name: submission_service
+    environment:
+      - DJANGO_DB_HOST=db
+    volumes:
+      - ./:/var/www/submission
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8081:80
+    depends_on:
+      - db
+    links:
+      - db
+    command: /bin/sh -c "cd /var/www/submission && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:80"
+    env_file:
+      - ./.env
+  redis:
+    image: redis
+    container_name: submission_redis
+volumes:
+  postgres_data:
