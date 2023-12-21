@@ -1,0 +1,14 @@
+# 실행 파일 무시하기
+generate_testcase
+
+
+# 테케 및 설정 무시하기
+testcases/
+.vscode/
+build/
+
+# 중요 파일 및 테스트 파일 무시하기
+judge_aws.h
+ssh_pem/
+simple_testcase.cc
+*.env
