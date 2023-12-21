@@ -1,0 +1,30 @@
+version: "1.0.0"
+services:
+  ProgramManageDB:
+    container_name: ProgramManageDB
+    image: mariadb
+    environment:
+      - MARIADB_ROOT_PASSWORD=1234
+
+  ProgramManageService:
+    container_name: ProgramManageService
+    image: program_manage_service
+    build:
+      tags:
+        - ""
+      args:
+        access_key: ${access_key}
+        secret_key: ${secret_key}
+        region: ${region}
+        topic_arn: ${topic_arn}
+        sqs_name: ${sqs_name}
+        sqs_url: ${sqs_url}
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    links:
+      - ProgramManageDB:ProgramManageDB
+    depends_on:
+      - ProgramManageDB
+    
