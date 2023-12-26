@@ -36,37 +36,44 @@ SNS 토픽을 구독하는 메세지 대기열 시스템입니다. 환경구성�
 - __JudgeCPP.fifo__
 
     Sub : No Topic
+    
     Pulled by : JudgeService(Workers)
 
 - __JudgeNotCPP.fifo__
 
     Sub : No Topic
+
     Pulled by : JudgeService(Workers)
 
 - __JudgeRT.fifo__
 
     Sub : No Topic
+
     Pulled by : RTService
 
 - __JudgeTask.fifo__
 
     Sub : DOJ-Submission-SubmitTask
+
     Pulled by : JudgeService(Broker)
 
 - __ScoreQueue.fifo__
 
     Sub : DOJ-TestCase-Queueing.fifo
+
     Pulled by : JudgeService(Broker)
 
 - __SubmissionDone.fifo__
 
     Sub : DOJ-Judge-JudgeDone.fifo
+
     Pulled by : SubmissionService
 
 
 - __ProblemManageQueue__
 
     Sub : DOJ-Judge-JudgeDone.fifo
+
     Pulled by : ProblemManage Service
 
 
