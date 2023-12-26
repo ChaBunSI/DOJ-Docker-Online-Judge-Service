@@ -61,13 +61,10 @@ export default function SignIn() {
               className={styles.auth_button}
               onClick={async () => {
                 try {
-                  const { data } = await axios.post(
-                    "https://api.goodpose.shop/auth/login",
-                    {
-                      email,
-                      password,
-                    }
-                  );
+                  const { data } = await axios.post(`${BASE_URL}/auth/login`, {
+                    email,
+                    password,
+                  });
 
                   localStorage.setItem(LOCAL_STORAGE_JWT_KEY, data.accessToken);
 
