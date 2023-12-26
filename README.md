@@ -17,7 +17,7 @@ AWS의 SNS와 SQS를 결합한 Fanout Pattern을 활용하여 서비스 간 데�
 # Quick Start
 <details>
 <summary> Quick Start</summary>
----
+
 ## Set AWS Infra
 AWS의 SNS와 SQS를 사용하기 때문에 해당 인프라를 만들어야 합니다. 기본적으로 fifo 큐를 사용하며, 하나의 SNS 토픽에 여러 개의 SQS가 구독하고, 각 SQS는 서비스에서 메세지를 풀링하는 Fanout Pattern을 따르고 있습니다.
 
@@ -26,45 +26,41 @@ AWS의 SNS와 SQS를 사용하기 때문에 해당 인프라를 만들어야 합
 ### SNS
 - DOJ-Judge-JudgeDone.fifo
 
-
 - DOJ-Submission-SubmitTask.fifo
 
-
 - DOJ-TestCase-Queueing.fifo
-
-
 
 ### SQS
 SNS 토픽을 구독하는 메세지 대기열 시스템입니다. 환경구성을 위해 SQS의 ARN과 URL이 필요합니다. 기본적으로 FIFO 형식이여야 합니다(ProblemManage Queue는 표준 Queue여도 가능합니다).
 
 - __JudgeCPP.fifo__
-Sub : No Topic
-Pulled by : JudgeService(Workers)
+    Sub : No Topic
+    Pulled by : JudgeService(Workers)
 
 - __JudgeNotCPP.fifo__
-Sub : No Topic
-Pulled by : JudgeService(Workers)
+    Sub : No Topic
+    Pulled by : JudgeService(Workers)
 
 - __JudgeRT.fifo__
-Sub : No Topic
-Pulled by : RTService
+    Sub : No Topic
+    Pulled by : RTService
 
 - __JudgeTask.fifo__
-Sub : DOJ-Submission-SubmitTask
-Pulled by : JudgeService(Broker)
+    Sub : DOJ-Submission-SubmitTask
+    Pulled by : JudgeService(Broker)
 
 - __ScoreQueue.fifo__
-Sub : DOJ-TestCase-Queueing.fifo
-Pulled by : JudgeService(Broker)
+    Sub : DOJ-TestCase-Queueing.fifo
+    Pulled by : JudgeService(Broker)
 
 - __SubmissionDone.fifo__
-Sub : DOJ-Judge-JudgeDone.fifo
-Pulled by : SubmissionService
+    Sub : DOJ-Judge-JudgeDone.fifo
+    Pulled by : SubmissionService
 
 
 - __ProblemManageQueue__
-Sub : DOJ-Judge-JudgeDone.fifo
-Pulled by : ProblemManage Service
+    Sub : DOJ-Judge-JudgeDone.fifo
+    Pulled by : ProblemManage Service
 
 
 ## Ready For Enviornment
