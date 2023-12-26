@@ -34,31 +34,38 @@ AWS의 SNS와 SQS를 사용하기 때문에 해당 인프라를 만들어야 합
 SNS 토픽을 구독하는 메세지 대기열 시스템입니다. 환경구성을 위해 SQS의 ARN과 URL이 필요합니다. 기본적으로 FIFO 형식이여야 합니다(ProblemManage Queue는 표준 Queue여도 가능합니다).
 
 - __JudgeCPP.fifo__
+
     Sub : No Topic
     Pulled by : JudgeService(Workers)
 
 - __JudgeNotCPP.fifo__
+
     Sub : No Topic
     Pulled by : JudgeService(Workers)
 
 - __JudgeRT.fifo__
+
     Sub : No Topic
     Pulled by : RTService
 
 - __JudgeTask.fifo__
+
     Sub : DOJ-Submission-SubmitTask
     Pulled by : JudgeService(Broker)
 
 - __ScoreQueue.fifo__
+
     Sub : DOJ-TestCase-Queueing.fifo
     Pulled by : JudgeService(Broker)
 
 - __SubmissionDone.fifo__
+
     Sub : DOJ-Judge-JudgeDone.fifo
     Pulled by : SubmissionService
 
 
 - __ProblemManageQueue__
+
     Sub : DOJ-Judge-JudgeDone.fifo
     Pulled by : ProblemManage Service
 
