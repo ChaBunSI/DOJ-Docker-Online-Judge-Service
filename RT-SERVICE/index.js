@@ -5,9 +5,10 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const AWS = require("aws-sdk");
 const Eureka = require("eureka-js-client").Eureka;
+const { AWS_ACCESS_KEY, AWS_SECRET_KEY, QUEUE_URL, } = process.env;
 
-const QUEUE_URL =
-  "https://sqs.ap-northeast-2.amazonaws.com/262981387273/JudgeRT.fifo";
+//const QUEUE_URL =
+//  "https://sqs.ap-northeast-2.amazonaws.com/262981387273/JudgeRT.fifo";
 const PORT = 5000;
 
 const client = new Eureka({
@@ -37,8 +38,8 @@ client.start((error) => {
 });
 
 AWS.config.update({
-  accessKeyId: "AKIAT2OXJQQESOXLJ4X3",
-  secretAccessKey: "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",
+  accessKeyId: AWS_ACCESS_KEY,
+  secretAccessKey: AWS_SECRET_KEY,
   region: "ap-northeast-2",
 });
 
