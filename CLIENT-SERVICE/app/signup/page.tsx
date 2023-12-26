@@ -7,6 +7,7 @@ import { useInput } from "@/hook/useInput";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { BASE_URL } from "@/global";
 
 export default function SignUp() {
   const router = useRouter();
@@ -91,14 +92,11 @@ export default function SignUp() {
                 }
 
                 try {
-                  const { data } = await axios.post(
-                    "https://api.goodpose.shop/auth/join",
-                    {
-                      email,
-                      password,
-                      name,
-                    }
-                  );
+                  const { data } = await axios.post(`${BASE_URL}/auth/join`, {
+                    email,
+                    password,
+                    name,
+                  });
 
                   toast.success("Join Success");
                   router.push("/signin");

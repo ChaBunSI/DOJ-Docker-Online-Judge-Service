@@ -2,7 +2,8 @@ import axios from "axios";
 
 export const LOCAL_STORAGE_JWT_KEY = "aksdjflaksdfj;lfsd";
 
-export const BASE_URL = "https://api.goodpose.shop";
+export const BASE_URL = "http://172.17.0.1";
+export const BASE_URL_WS = "ws://172.17.0.1";
 
 export const fetchGroup = {
   api: axios.create({

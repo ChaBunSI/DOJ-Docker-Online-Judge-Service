@@ -6,6 +6,7 @@ import pStyles from "../../problem.module.css";
 import Image from "next/image";
 import {
   BASE_URL,
+  BASE_URL_WS,
   RealTimeInfoInterface,
   SubmitDataInterface,
   getLanguage,
@@ -38,7 +39,7 @@ export default function Submission({ params: { id } }: any) {
 
       const waitingList = [submitData.id];
 
-      socket.current = io("wss://api.goodpose.shop", {
+      socket.current = io(BASE_URL_WS, {
         path: "/rt_service/socket.io",
       });
       // socket.current = io("ws://localhost:5000", {
