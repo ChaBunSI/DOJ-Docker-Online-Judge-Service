@@ -1,0 +1,105 @@
+version: "1"
+services:
+  discovery:
+    image: doj-discovery-service
+    container_name: doj-discovery-service-container
+    ports:
+      - 8761:8761
+
+  gateway:
+    image: doj-gateway-service
+    container_name: doj-gateway-service-container
+    ports:
+      - 80:80
+    depends_on:
+      - discovery
+
+  auth-web:
+    image: doj-auth-service
+    container_name: doj-auth-service-container
+    ports:
+      - 81:81
+    volumes:
+      - /app/db:/db
+    depends_on:
+      - discovery
+
+  sub_db_init:
+    image: postgres
+    volumes:
+      - "postgres_data:/data"
+    entrypoint:
+      - sh
+      - -c
+      - |
+        chown -R 2000:2000 /data
+
+  sub_db:
+    depends_on:
+      sub_db_init:
+        condition: service_completed_successfully
+    container_name: sub_db
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=ngds
+      - POSTGRES_USER=ngds
+      - POSTGRES_PASSWORD=ngds
+      - PGDATA=/pgdata
+    volumes:
+      - postgres_data:/pgdata
+    user: "2000"
+  submission:
+    image: submission-service
+    container_name: submission_service
+    environment:
+      - DJANGO_DB_HOST=sub_db
+    volumes:
+      - ./:/var/www/submission
+    ports:
+      - 8081:80
+    depends_on:
+      - sub_db
+      - discovery
+    links:
+      - sub_db
+    command: /bin/sh -c "cd /var/www/submission && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:80"
+    env_file:
+      - ./DOJ_ms_submission/.env
+
+  sub_redis:
+    image: redis
+    container_name: submission_redis
+
+  rt_service:
+    image: rt-service
+    container_name: rt_service
+    ports:
+      - 5000:5000
+
+  ProgramManageDB:
+    container_name: ProgramManageDB
+    image: mariadb
+    environment:
+      - MARIADB_ROOT_PASSWORD=1234
+
+  problem_manage:
+    image: problem-manage-service
+    container_name: problem_manage_service
+    ports:
+      - 8080:8080
+    links:
+      - ProgramManageDB:ProgramManageDB
+    depends_on:
+      - discovery
+      - ProgramManageDB
+
+  client_service:
+    image: client-service
+    ports:
+      - 3000:3000
+
+volumes:
+  postgres_data:
+   
+    
