@@ -57,4 +57,4 @@ echo "const Aws::String ACCESS_KEY = \"$AWS_ACCESS_KEY\";" >> judge_aws.h
 echo "const Aws::String SECRET_KEY = \"$AWS_SECRET_KEY\";" >> judge_aws.h
 
 # Build Docker Image
-docker build -t jduge_service .
+docker buildx build -t jduge_service_<category> .
