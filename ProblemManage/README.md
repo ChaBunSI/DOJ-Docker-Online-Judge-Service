@@ -35,7 +35,6 @@ docker build -t program_manage_service \
 ## 3. Docker Compose
 본 서비스 이미지를 포함하여 모든 이미지가 준비되었을 때, docker compose를 통해 서비스를 올려주시면 됩니다.
 
-__준비중..__
 
 # Service Description
 문제와 테스트케이스를 관리하는 서비스입니다.
@@ -45,6 +44,10 @@ __준비중..__
   - 토픽에 메세지를 전달하여 채점 서버의 테스트케이스 DB 동기화
 - DOJ-Judge-JudgeDone.fifo Subscribe
   - 토픽을 구독하여 맞춘/틀린 횟수 동기화
+
+![Alt text](image.png)
+
+![Alt text](image-1.png)
 
 ---
 
