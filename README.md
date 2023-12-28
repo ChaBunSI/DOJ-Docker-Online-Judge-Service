@@ -3,6 +3,8 @@ Docker로 배포하는 MSA 기반 Online Judge 서비스입니다.
 
 # What is DOJ?
 ---
+![Alt text](images/mainpage.png)
+
 DOJ는 도커 환경에서 배포되는 Online Judge 서비스입니다. 온라인 저지란, 백준과 프로그래머스처럼 알고리즘 문제를 작성하고 채점을 하는 서비스입니다. MSA 기반으로 작성되었으며, 일부 AWS 인프라에 의존되어 있습니다. 
 
 # DOJ Architecture
@@ -13,6 +15,24 @@ DOJ는 도커 환경에서 배포되는 Online Judge 서비스입니다. 온라�
 ![Alt text](images/EventDrivenArchitecture.png)
 
 AWS의 SNS와 SQS를 결합한 Fanout Pattern을 활용하여 서비스 간 데이터를 동기화시켜줍니다.
+
+# Microservice Descriptions
+---
+[사용자 서비스](https://github.com/ChaBunSI/DOJ-Docker-Online-Judge-Service/tree/main/AUTH-SERVICE)
+
+[답안 제출 서비스](https://github.com/ChaBunSI/DOJ-Docker-Online-Judge-Service/tree/main/DOJ_ms_submission)
+
+[문제 관리 서비스](https://github.com/ChaBunSI/DOJ-Docker-Online-Judge-Service/tree/main/ProblemManage)
+
+[채점 서비스](https://github.com/ChaBunSI/DOJ-Docker-Online-Judge-Service/tree/main/JUDGE-SERVICE)
+
+[실시간 채점 현황 서비스](https://github.com/ChaBunSI/DOJ-Docker-Online-Judge-Service/tree/main/RT-SERVICE)
+
+[GateWay Server](https://github.com/ChaBunSI/DOJ-Docker-Online-Judge-Service/tree/main/GATEWAY-SERVICE)
+
+[Service Discovery Server](https://github.com/ChaBunSI/DOJ-Docker-Online-Judge-Service/tree/main/DISCOVERY-SERVICE)
+
+[Frontend](https://github.com/ChaBunSI/DOJ-Docker-Online-Judge-Service/tree/main/CLIENT-SERVICE)
 
 # Quick Start
 <details>
@@ -36,7 +56,7 @@ SNS 토픽을 구독하는 메세지 대기열 시스템입니다. 환경구성�
 - __JudgeCPP.fifo__
 
     Sub : No Topic
-    
+
     Pulled by : JudgeService(Workers)
 
 - __JudgeNotCPP.fifo__
@@ -213,24 +233,6 @@ docker compose up -d
   ```
 </details>
 
-# Microservice Descriptions
----
-사용자 서비스
-
-답안 제출 서비스
-
-문제 관리 서비스
-
-채점 서비스
-
-실시간 채점 현황 서비스
-
-GateWay Server
-
-Service Discovery Server
-
-Frontend
-
 
 # Dev Roles
 ---
@@ -243,10 +245,10 @@ Frontend
 | 공통   | AWS SNS / SQS 연동 및 데이터 동기화 작업, 프로젝트 기획| 
 
 # Documents
-DOJ 최종보고서
+[DOJ 최종보고서](https://github.com/ChaBunSI/DOJ-Docker-Online-Judge-Service/blob/main/Documents/DOJ%20%EC%B5%9C%EC%A2%85%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf)
 
-DOJ 발표 자료
+[DOJ 발표 자료](https://github.com/ChaBunSI/DOJ-Docker-Online-Judge-Service/blob/main/Documents/%EC%B5%9C%EC%A2%85%EB%B0%9C%ED%91%9C_%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C.pptx)
 
-DOJ 발표 영상
+[DOJ 발표 영상](https://youtu.be/UL-03nXUSQU)
 
 ---
